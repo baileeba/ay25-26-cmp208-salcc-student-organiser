@@ -2,12 +2,76 @@
     text-decoration: none;
 }
 
-/* calender */
-.mini-calender {
+/* dashboard */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(3);
+    padding: 10px;
+}
+
+/* calendar */
+.mini-calendar {
     width: 380px;
     height: auto;
     display: flex;
     flex-direction: column;
     padding: 10px;
     border-radius: 10px;
+    background: lightgrey;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.header button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.day {
+    text-align: center;
+    padding: 5px;
+    font-weight: 500;
+}
+
+.dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.date {
+    padding: 10px;
+    text-align: center;
+    background: white;
+    border-radius: 5px;
+}
+
+.inactive {
+    color: #aaa;
+    opacity: 0.6;
+}
+
+.active {
+    background: #333;
+    color: white;
+    border-radius: 5px;
 }
