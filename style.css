@@ -1,0 +1,13 @@
+#nav a {
+    text-decoration: none;
+}
+
+/* calender */
+.mini-calender {
+    width: 380px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+}
