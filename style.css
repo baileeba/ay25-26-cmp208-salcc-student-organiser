@@ -1,16 +1,31 @@
+/* general */
+body {
+    background-color: #fff5e3;
+    background-image: radial-gradient(#daceb8 1.5px, transparent 0);
+    background-size: 20px 20px;
+    color: #223340;
+}
+
+/* navbar */
 #nav a {
     text-decoration: none;
     padding: 10px;
     font-size: 20px;
     width: 98%;
     margin: auto;
+    color: #223340;
 }
 
-body {
-    background-color: #fff5e3;
-    background-image: radial-gradient(#daceb8 1.5px, transparent 0);
-    background-size: 20px 20px;
-    color: #223340;
+#nav a:active {
+    border: 10px solid #223340;
+    border-radius: 10px;
+}
+
+#nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px; background-color: #fff5e3;
 }
 
 /* dashboard */
