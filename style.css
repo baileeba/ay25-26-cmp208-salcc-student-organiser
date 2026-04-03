@@ -1,5 +1,15 @@
 #nav a {
     text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+    width: 98%;
+    margin: auto;
+}
+
+body {
+    background-color: #fff5e3;
+    background-image: radial-gradient(#c0b5a0 1.5px, transparent 0);
+    background-size: 20px 20px;
 }
 
 /* dashboard */
@@ -17,7 +27,7 @@
     flex-direction: column;
     padding: 10px;
     border-radius: 10px;
-    background: lightgrey;
+    background: #fff;
 }
 
 .header {
@@ -61,17 +71,17 @@
 .date {
     padding: 10px;
     text-align: center;
-    background: white;
+    background: rgb(232, 232, 232);
     border-radius: 5px;
 }
 
 .inactive {
-    color: #aaa;
-    opacity: 0.6;
+    color: #a189c0;
+    opacity: 0.5;
 }
 
 .active {
-    background: #333;
+    background: #d5b4ff;
     color: white;
     border-radius: 5px;
 }
