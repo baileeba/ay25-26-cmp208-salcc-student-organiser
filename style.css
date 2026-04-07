@@ -1,6 +1,9 @@
 /* general */
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
     background-color: #fff5e3;
+    font-family: "Sour Gummy", sans-serif;
     background-image: radial-gradient(#daceb8 1.5px, transparent 0);
     background-size: 20px 20px;
     color: #223340;
@@ -21,6 +24,10 @@ body {
     border-radius: 10px;
 }
 
+#nav a:hover {
+    text-decoration: underline;
+}
+
 #nav {
     display: flex;
     align-items: center;
@@ -31,7 +38,11 @@ body {
 /* dashboard */
 .dashboard {
     display: grid;
-    grid-template-columns: repeat(3);
+    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-areas: 
+    "section1"
+    "section2"
+    "section3";
     padding: 10px;
 }
 
@@ -50,6 +61,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 20px;
     padding: 10px;
 }
 
@@ -100,4 +112,29 @@ body {
     background: #d5b4ff;
     color: white;
     border-radius: 5px;
+}
+
+/* goal */
+.goal {
+    justify-content: left;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 475px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.goal h1 {
+    font-size: 20px;
+}
+
+.goal h1, p {
+    margin-left: 10px;
+    text-align: left;
+}
+
+/* remember */
+.remember {
+    
 }
