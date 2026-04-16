@@ -1,6 +1,13 @@
 /* general */
 @import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
+@font-face {
+    font-family: 'Apple Garamond';
+    src: url('assets/apple_garamond/AppleGaramond.ttf');
+    font-weight: normal;
+    font-style: normal;
+   }
+
 body {
     background-color: #fff5e3;
     font-family: "Sour Gummy", sans-serif;
@@ -135,6 +142,18 @@ body {
 }
 
 /* remember */
-.remember {
-    
+.section2 {
+    background-image: url("assets/REMINDER_PAPER.png");
+    background-size: 85% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+/* upcoming */
+.section3 {
+    background-image: url("assets/UPCOMING_PAPER.png");
+    background-size: 170% auto;
+    background-position: center;
+    background-repeat: no-repeat;
 }
