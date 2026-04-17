@@ -16,6 +16,54 @@ body {
     color: #223340;
 }
 
+/* login */
+#login {
+    display: block;
+    text-align: center;
+}
+
+.folder {
+    position: relative;
+    background-image: url("assets/folder.png");
+    margin: auto;
+    aspect-ratio: 3/2;
+    background-size: cover;
+    width: 40%;
+    background-repeat: no-repeat;
+    background-position-y: -20px;
+}
+
+#login a {
+    position: absolute;
+    text-decoration: none;
+    color: #223340;
+    text-align: center;
+    margin-top: -10px;
+    margin-left: -4%;
+}
+
+.login {
+    position: absolute;
+    bottom: -10%;
+    right: 5%;
+    background-image: url("assets/LOGIN_STICKY.png");
+    background-repeat: no-repeat;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    width: 35%;
+    border: none;
+    background-color: transparent;
+    padding-top: 20px;
+    padding-left: 20px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 20px;
+    text-shadow: 2px 2px 2px rgba(34,51,64,0.43);
+}
+
+.login:hover {
+    cursor: pointer;
+}
+
 /* navbar */
 #nav a {
     text-decoration: none;

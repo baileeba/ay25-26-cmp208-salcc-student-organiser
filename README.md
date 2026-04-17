@@ -1,1 +1,1 @@
-# ay25-26-cmp208-salcc-student-organiser
+# Please run the sql file before using the site.

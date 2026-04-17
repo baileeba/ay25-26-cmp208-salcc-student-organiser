@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if ($stmt->execute()) {
             echo "Record saved successfully!";
         } else {
-            echo "Error: " . $stmt->error;
+            echo "Error: ".$stmt->error;
         }
     }
 }
@@ -53,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
 		<title>Sign Up</title>
         <link rel = "stylesheet" href = "style.css">
-        <link rel = 'icon' href = 'assets/folder.png'>
+        <link rel = 'icon' href = 'assets/GREEN_FOLDER.png'>
 	</head>
 	
 	<body>

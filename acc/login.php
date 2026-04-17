@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "connect.php";
 
 $username = $password = "";
@@ -20,7 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     if($usernameErr == "" && $passwordErr == ""){
 
-        $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username = ?");
+        $stmt = $conn->prepare("SELECT user_id, username, password FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
@@ -30,10 +31,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $row = $result->fetch_assoc();
 
             if(password_verify($password, $row["password"])){
-                echo "Login successful!";
                 
-                session_start();
                 $_SESSION["username"] = $row["username"];
+                
+                header("Location: ../index.php");
+                exit();
                 
             } else {
                 $loginErr = "Invalid password";
@@ -45,3 +47,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang = 'en'> 
+	<head>
+		<meta charset = "UTF-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+		<title>Login</title>
+        <link rel = "stylesheet" href = "../style.css">
+        <link rel = 'icon' href = '../assets/GREEN_FOLDER.png'>
+	</head>
+	
+	<body id = 'login'>
+        <br><br>
+        <div class = 'folder'>
+            <br><br>
+		    <h1>Welcome!</h1>
+		    <form action = "login.php" method = "post">
+			    <label>Username:</label><br>
+			    <input type="text" name = "username"><br>
+			    <label>Email:</label><br>
+			    <input type = "email" name = "email"><br>
+			    <label>Password:</label><br>
+			    <input type="password" name = "password"><br><br>
+			    <input type = "submit" value = "Log In" class = "login">
+		    </form>
+        </div>
+
+        <a href="../acc/signup.php">make an account</a>
+
+    <?php
+        if(isset($usernameErr)) echo $usernameErr."<br>";
+        if(isset($passwordErr)) echo $passwordErr."<br>";
+        if(isset($loginErr)) echo $loginErr."<br>";
+    ?>
+	</body>
+	</html>

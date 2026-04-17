@@ -1,4 +1,5 @@
 <?php
+
     session_start();
     include "connect.php";
 
@@ -6,7 +7,8 @@
         header("Location: acc/login.php");
         exit();
     }
-?>
+        
+?> 
 
 <!DOCTYPE html>
 <html lang = "en">
@@ -16,7 +18,7 @@
         <title>StudSorter</title>
         <link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel = "stylesheet" href = "style.css">
-        <link rel = 'icon' href = 'assets/folder.png'>
+        <link rel = 'icon' href = 'assets/GREEN_FOLDER.png'>
     </head>
 
     <body>
