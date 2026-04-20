@@ -8,13 +8,13 @@ $usernameErr = $passwordErr = $loginErr = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     if(empty($_POST["username"])){
-        $usernameErr = "Username is required";
+        $usernameErr = "Username is incorrect";
     } else {
         $username = $_POST["username"];
     }
 
     if(empty($_POST["password"])){
-        $passwordErr = "Password is required";
+        $passwordErr = "Password is incorrect";
     } else {
         $password = $_POST["password"];
     }
@@ -74,12 +74,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		    </form>
         </div>
 
-        <a href="../acc/signup.php">make an account</a>
+        <a href="../acc/signup.php">make an account</a><br>
 
+    <div class = "error-display">
     <?php
-        if(isset($usernameErr)) echo $usernameErr."<br>";
-        if(isset($passwordErr)) echo $passwordErr."<br>";
-        if(isset($loginErr)) echo $loginErr."<br>";
+        if(isset($usernameErr)) echo $usernameErr;
+        if(isset($passwordErr)) echo $passwordErr;
+        if(isset($loginErr)) echo $loginErr;
     ?>
+    </div>
 	</body>
 	</html>
