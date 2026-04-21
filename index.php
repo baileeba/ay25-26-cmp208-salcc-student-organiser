@@ -1,7 +1,7 @@
 <?php
 
     session_start();
-    include "connect.php";
+    include "acc/connect.php";
 
     if(!isset($_SESSION["user_id"])) {
         header("Location: acc/login.php");
