@@ -75,6 +75,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
 
         <a href="../acc/signup.php">make an account</a><br>
+        <a href="../acc/forgot.php">forgot password?</a>
 
     <div class = "error-display">
     <?php

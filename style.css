@@ -198,16 +198,26 @@ body {
 /* remember */
 .section2 {
     background-image: url("assets/REMINDER_PAPER.png");
-    background-size: 85% auto;
+    background-size: 130% 96%;
     background-position: center;
     background-repeat: no-repeat;
 
 }
 
+.remember {
+    padding: 10px;
+    width: 70%;
+    padding-top: 20px;
+}
+
 /* upcoming */
 .section3 {
     background-image: url("assets/UPCOMING_PAPER.png");
-    background-size: 170% auto;
+    background-size: 370% 96%;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.upcoming {
+    padding: 10px;
 }
