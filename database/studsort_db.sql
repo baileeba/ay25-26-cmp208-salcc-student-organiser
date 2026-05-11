@@ -9,3 +9,14 @@ CREATE TABLE users (
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL
 );
+
+CREATE TABLE reminders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `reminder_date` DATE NOT NULL,
+    `reminder_text` VARCHAR(255) NOT NULL,
+    `reminder_color` VARCHAR(7) NOT NULL DEFAULT '#3498db',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    INDEX (user_id, reminder_date)
+);

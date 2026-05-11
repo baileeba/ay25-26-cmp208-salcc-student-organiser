@@ -71,8 +71,8 @@
             </div>
 
             <div class = 'section2'>
-                <div class = "remember">
-                <p>this is placeholder text, the reminders section would go here!</p>
+                <div class="remember" id="remember">
+                    <p class="no-reminders">Select a date to view reminders</p>
                 </div>
             </div>
 
