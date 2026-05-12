@@ -14,12 +14,12 @@ const fetchReminders = async () => {
     try {
         const response = await fetch('/api/reminders.php');
         if (!response.ok) {
-            throw new Error('Server error');
+            throw new Error('server error');
         }
         remindersData = await response.json();
         console.log(remindersData);
     } catch (error) {
-        console.error('Failed to fetch reminders:', error);
+        console.error('failed to fetch reminders:', error);
     }
 };
 
@@ -31,12 +31,19 @@ const getRemindersForDate = (year, month, day) => {
 
 // display reminders remember
 const displayReminders = (year, month, day) => {
+
+    // hide default message
+    const defaultMsg = document.getElementById('defaultReminder');
+    if (defaultMsg) {
+        defaultMsg.style.display = 'none';
+    }
+
     const reminders = getRemindersForDate(year, month, day);
     
     let html = '';
     
     if (reminders.length === 0) {
-        html = '<p class="no-reminders">No reminders for this date</p>';
+        html = '<p class="no-reminders">no reminders for this date</p>';
     } else {
         html = `<h3>${new Date(year, month, day).toLocaleDateString('default', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h3>`;
         html += '<div class="reminders-list">';

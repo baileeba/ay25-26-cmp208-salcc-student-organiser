@@ -71,18 +71,25 @@
             </div>
 
             <div class = 'section2'>
-                <div class="remember" id="remember">
-                    <p class="no-reminders">Select a date to view reminders</p>
+                <div class="remember">
+                    <h2>reminders</h2>
+                    <div id="remember">
+                        <p class="no-reminders" id="defaultReminder">
+                            select a date to view reminders!</p>
+                    </div>
                 </div>
             </div>
 
-            <div class= "section3">
-                <div class = "upcoming">
-                    <p>this is where upcoming reminders would go</p>
+            <div class="section3">
+                <div class="upcoming">
+                    <h2>upcoming</h2>
+                    <div id="upcoming"></div>
                 </div>
             </div>
+
         </div>
         <script src = "js/navbar.js" defer></script>
         <script src = "js/calendar.js" defer></script>
+        <script src = "js/upcoming.js" defer></script>
     </body>
 </html>

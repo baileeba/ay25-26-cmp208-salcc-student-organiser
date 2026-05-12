@@ -238,7 +238,7 @@ body {
 .remember {
     padding: 10px;
     width: 70%;
-    padding-top: 20px;
+    padding-top: 30px;
 }
 
 .remember h3 {
@@ -288,10 +288,52 @@ body {
     background-size: 370% 96%;
     background-position: center;
     background-repeat: no-repeat;
+    padding: 20px;
+    min-height: 400px;
 }
 
 .upcoming {
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.upcoming h2 {
+    margin: 0 0 -10px 0;
+}
+
+.upcoming-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 3px solid #223340;
+    border-radius: 8px;
+    background-color: #b5eda8;
+}
+
+.upcoming-color {
+    width: 14px;
+    height: 50px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.upcoming-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.upcoming-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.upcoming-date {
+    margin: 0;
+    font-size: 14px;
 }
 
 /* profile */
