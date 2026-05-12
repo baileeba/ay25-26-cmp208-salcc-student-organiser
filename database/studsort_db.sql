@@ -7,7 +7,7 @@ CREATE TABLE users (
   `name` varchar(100) NOT NULL,
   `username` varchar(50) NOT NULL UNIQUE,
   `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(250) NOT NULL
 );
 
 CREATE TABLE reminders (

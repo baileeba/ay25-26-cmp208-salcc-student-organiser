@@ -15,7 +15,7 @@
         if($idle_time > $timeout_duration) {
             session_unset();
             session_destroy();
-            header("Location: login.php?reason=timeout");
+            header("Location: login.php");
             exit;
         }
     }
