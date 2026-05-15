@@ -20,6 +20,7 @@
             </div>
 
             <div class = 'box1'>
+                <p id = 'editProfileBtn'>edit profile</p>
                 <p>edit categories</p>
                 <p>import SONIS schedule</p>
                 <p>request email notifs</p>

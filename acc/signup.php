@@ -71,5 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			<input type = "password" name = "confirm_password"><br><br>
 			<input type = "submit" value = "Sign Up">
 		</form>
+
+        <a href= "login.php">back</a>
 	</body>
 	</html>

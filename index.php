@@ -66,7 +66,10 @@
 
                 <div class= "goal">
                     <h1>goal</h1>
-                    <p>placeholder text</p>
+                    <div id="goal">
+                        <p class="no-goal" id="defaultGoal">
+                            go to the ‘goals’ page to set a goal!!</p>
+                    </div>
                 </div>
             </div>
 
@@ -91,5 +94,6 @@
         <script src = "js/navbar.js" defer></script>
         <script src = "js/calendar.js" defer></script>
         <script src = "js/upcoming.js" defer></script>
+        <script src = "js/goal.js" defer></script>
     </body>
 </html>
