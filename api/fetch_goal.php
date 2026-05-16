@@ -1,20 +1,27 @@
 <?php
-    session_start();
-    include "connect.php";
+header("Content-Type: application/json");
+session_start();
+include "connect.php";
 
-    if(!isset($_SESSION["user_id"])) {
-        echo json_encode(["success" => false, "message" => "Not authenticated"]);
-        exit();
-    }
+if (!isset($_SESSION["user_id"])) {
+    echo json_encode([
+        "success" => false,
+        "message" => "not authenticated"
+    ]);
+    exit();
+}
 
-    $user_id = $_SESSION["user_id"];
+$user_id = $_SESSION["user_id"];
+$mode = $_GET['mode'] ?? 'single';
 
-    // get goal with the nearest target date that is active
-    $query = "SELECT goal_id, title, description, target_date, progress_percentage, status 
-              FROM goals 
-              WHERE user_id = ? AND status IN ('active')
-              ORDER BY target_date ASC 
-              LIMIT 1";
+if ($mode === "single") {
+
+    $query = "SELECT goal_id, title, description, target_date, progress_percentage, status
+    FROM goals
+    WHERE user_id = ?
+    AND status = 'active'
+    ORDER BY target_date ASC
+    LIMIT 1";
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $user_id);
@@ -23,11 +30,39 @@
 
     if ($result->num_rows > 0) {
         $goal = $result->fetch_assoc();
-        echo json_encode(["success" => true, "goal" => $goal]);
+        echo json_encode([
+            "success" => true,
+            "goal" => $goal]);
+
     } else {
-        echo json_encode(["success" => false, "message" => "No goals found"]);
+        echo json_encode([
+            "success" => false,
+            "message" => "no goals found"]);
+    }
+}
+
+else if ($mode === "all") {
+
+    $query = "SELECT goal_id, title, description, target_date, progress_percentage, status FROM goals
+    WHERE user_id = ?
+    ORDER BY target_date ASC";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $goals = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $goals[] = $row;
     }
 
-    $stmt->close();
-    $conn->close();
+    echo json_encode([
+        "success" => true,
+        "goals" => $goals
+    ]);
+}
+
+$stmt->close();
+$conn->close();
 ?>

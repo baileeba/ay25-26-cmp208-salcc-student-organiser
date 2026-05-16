@@ -385,3 +385,25 @@ body {
     border-radius: 10px;
     font-size: 20px;
 }
+
+/* goal editor */
+.goal-editor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    gap: 10px 10px;
+}
+
+.edit {
+    margin: auto;
+    background-image: url("assets/PLACEHOLDER_FILESHEET.png");
+    background-repeat: no-repeat;
+    width: 400px;
+    height: 400px;
+    border: 3px transparent solid;
+    border-radius: 15px;
+}
+
+.decor {
+    margin: auto;
+}
