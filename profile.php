@@ -47,17 +47,35 @@
 
             <div class = 'box1'>
                 <p id = 'editProfileBtn'>edit profile</p>
-                <p>edit categories</p>
-                <p>friends</p>
-                <p>import SONIS schedule</p>
-                <p>request email notifs</p>
-                <p>contact us</p>
+                <p id = 'editCategoriesBtn'>edit categories</p>
+                <p id = "importBtn">import SONIS schedule</p>
+                <p id = "emailNotifsBtn">request email notifs</p>
+                <p id = 'contactBtn'>contact us</p>
             </div>
 
             <div class = 'box2'>
+                <p id = 'friendsBtn'>friends</p>
+                <p id = "changePasswordBtn">change password</p>
                 <p id = "logoutBtn">log out</p>
-                <p>change password</p>
-                <p>sync to phone</p>
+            </div>
+        </div>
+
+        <div id="contactModal">
+            <div id="contactModalContent">
+                <div id="contactModalHeader">
+                    <h2>contact us</h2>
+                    <span id="closeContactModal">&times;</span>
+                </div>
+                <form id="contactForm">
+                    <label for="contactSubject">Subject:</label>
+                    <input type="text" id="contactSubject" name="subject" required>
+                    
+                    <label for="contactMessage">Message:</label>
+                    <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                    
+                    <button type="submit">Send</button>
+                    <button type="button" id="cancelContact">Cancel</button>
+                </form>
             </div>
         </div>
 

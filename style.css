@@ -407,3 +407,83 @@ body {
 .goal-forms {
     margin: auto;
 }
+
+#contactModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#contactModalContent {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 3px solid #223340;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+}
+
+#contactModalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#contactModalHeader h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#closeContactModal {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #223340;
+}
+
+#closeContactModal:hover {
+    color: #666;
+}
+
+#contactForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#contactForm label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#contactForm input,
+#contactForm textarea {
+    padding: 10px;
+    border: 2px solid #223340;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+#contactForm button {
+    padding: 10px 20px;
+    border: 2px solid #223340;
+    border-radius: 5px;
+    background-color: #b5eda8;
+    color: #223340;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#contactForm button:hover {
+    background-color: #9fd088;
+}
