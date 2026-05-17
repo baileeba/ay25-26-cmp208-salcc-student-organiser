@@ -17,7 +17,6 @@
         exit();
     }
 
-    // Search for users by name or username (excluding the current user)
     $query = "
         SELECT u.user_id, u.name, u.username
         FROM users u
@@ -35,7 +34,6 @@
     $users = [];
 
     while ($user = $result->fetch_assoc()) {
-        // Check if already friends
         $friendship_check = "
             SELECT friendship_id FROM friendships 
             WHERE (user_id_1 = ? AND user_id_2 = ?) OR (user_id_1 = ? AND user_id_2 = ?)
@@ -50,7 +48,6 @@
             $user['buttonClass'] = 'btn-pending';
             $user['action'] = 'already_friends';
         } else {
-            // Check pending request
             $request_check = "
                 SELECT request_id, status FROM friend_requests 
                 WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)

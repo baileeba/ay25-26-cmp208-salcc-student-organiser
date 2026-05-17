@@ -24,7 +24,6 @@
     }
 
     if ($action === 'send_request') {
-        // Check if request already exists
         $check_query = "
             SELECT request_id FROM friend_requests 
             WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
@@ -39,7 +38,7 @@
             exit();
         }
 
-        // Create friend request
+        
         $insert_query = "
             INSERT INTO friend_requests (sender_id, receiver_id, status)
             VALUES (?, ?, 'pending')

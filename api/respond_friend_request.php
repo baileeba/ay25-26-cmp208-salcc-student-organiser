@@ -23,7 +23,6 @@
         exit();
     }
 
-    // Verify that this request is for the current user
     $verify_query = "
         SELECT sender_id, receiver_id FROM friend_requests 
         WHERE request_id = ? AND receiver_id = ?
@@ -42,7 +41,6 @@
     $sender_id = $request_data['sender_id'];
 
     if ($action === 'accepted') {
-        // Update friend request status
         $update_query = "
             UPDATE friend_requests 
             SET status = 'accepted'
@@ -52,7 +50,6 @@
         $stmt->bind_param("i", $request_id);
         $stmt->execute();
 
-        // Create friendship record
         $friendship_query = "
             INSERT INTO friendships (user_id_1, user_id_2)
             VALUES (?, ?)
@@ -66,7 +63,6 @@
             echo json_encode(['success' => false, 'message' => 'Failed to accept friend request']);
         }
     } else if ($action === 'declined') {
-        // Update friend request status
         $update_query = "
             UPDATE friend_requests 
             SET status = 'declined'

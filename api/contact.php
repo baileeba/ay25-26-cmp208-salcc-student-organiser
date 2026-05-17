@@ -18,7 +18,6 @@
         exit();
     }
 
-    // Get user email
     $user_query = "SELECT email FROM users WHERE user_id = ?";
     $stmt = $conn->prepare($user_query);
     $stmt->bind_param("i", $user_id);
@@ -27,8 +26,8 @@
     $user_data = $result->fetch_assoc();
     $user_email = $user_data['email'];
 
-    // Send email to admin (you can replace 'admin@example.com' with actual admin email)
-    $admin_email = 'admin@example.com';
+
+    $admin_email = 'ayarmarks@gmail.com';
     $email_subject = 'Contact Form Submission: ' . $subject;
     $email_body = "User Email: " . $user_email . "\n\n";
     $email_body .= "Subject: " . $subject . "\n\n";
