@@ -34,7 +34,7 @@
                         <textarea id="goalDescription" name="description" rows="4"></textarea><br>
                         
                         <label for="goalDate">target date</label><br>
-                        <input type="date" id="goalDate" name="target_date"><br>
+                        <input type="date" id="goalDate" name="target_date"><br><br>
                         
                         <button type="submit">create</button>
                     </form>
@@ -54,7 +54,8 @@
                             <option value="active">active</option>
                             <option value="completed">completed</option>
                             <option value="abandoned">abandoned</option>
-                        </select>
+                        </select><br><br>
+
                         <button type="submit">update</button>
                     </form>
                     <p id="updateGoalMessage"></p>
