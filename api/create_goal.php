@@ -1,70 +1,58 @@
 <?php
-header("Content-Type: application/json");
 session_start();
-include "connect.php";
 
-if (!isset($_SESSION["user_id"])) {
-    echo json_encode([
-        "success" => false,
-        "message" => "not authenticated"
-    ]);
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'message' => 'User not authenticated']);
     exit();
 }
 
-$user_id = $_SESSION["user_id"];
-$data = json_decode(file_get_contents("php://input"), true);
+require_once 'connect.php';
 
-if (!isset($data['title']) || empty(trim($data['title']))) {
-    echo json_encode([
-        "success" => false,
-        "message" => "goal title is required"
-    ]);
+$user_id = $_SESSION['user_id'];
+$title = trim($_POST['title'] ?? '');
+$description = trim($_POST['description'] ?? '');
+$target_date = $_POST['target_date'] ?? '';
+
+if (empty($title)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Goal title is required']);
     exit();
 }
 
-if (!isset($data['target_date']) || empty($data['target_date'])) {
-    echo json_encode([
-        "success" => false,
-        "message" => "target date is required"
-    ]);
+if (empty($target_date)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Target date is required']);
     exit();
 }
 
-$title = trim($data['title']);
-$description = isset($data['description']) ? trim($data['description']) : '';
-$target_date = $data['target_date'];
-$progress_percentage = isset($data['progress_percentage']) ? intval($data['progress_percentage']) : 0;
-
-if ($progress_percentage < 0 || $progress_percentage > 100) {
-    $progress_percentage = 0;
+$target_timestamp = strtotime($target_date);
+if ($target_timestamp <= time()) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Target date must be in the future']);
+    exit();
 }
 
-$query = "INSERT INTO goals (user_id, title, description, target_date, progress_percentage, status)
-VALUES (?, ?, ?, ?, ?, 'active')";
-
-$stmt = $conn->prepare($query);
+$stmt = $conn->prepare("INSERT INTO goals (user_id, title, description, target_date, status) VALUES (?, ?, ?, ?, 'active')");
 
 if (!$stmt) {
-    echo json_encode([
-        "success" => false,
-        "message" => "database error: " . $conn->error
-    ]);
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $conn->error]);
     exit();
 }
 
-$stmt->bind_param("isssi", $user_id, $title, $description, $target_date, $progress_percentage);
+$stmt->bind_param('isss', $user_id, $title, $description, $target_date);
 
 if ($stmt->execute()) {
+    $goal_id = $stmt->insert_id;
     echo json_encode([
-        "success" => true,
-        "message" => "goal created successfully",
-        "goal_id" => $stmt->insert_id
+        'success' => true, 
+        'message' => 'Goal created successfully',
+        'goal_id' => $goal_id
     ]);
 } else {
-    echo json_encode([
-        "success" => false,
-        "message" => "error creating goal: " . $stmt->error
-    ]);
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Error creating goal: ' . $stmt->error]);
 }
 
 $stmt->close();

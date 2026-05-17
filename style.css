@@ -387,14 +387,14 @@ body {
 }
 
 /* goal editor */
-.goal-editor {
+.goals-page {
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 10px;
     gap: 10px 10px;
 }
 
-.edit {
+.goal-display {
     margin: auto;
     background-image: url("assets/PLACEHOLDER_FILESHEET.png");
     background-repeat: no-repeat;
@@ -404,10 +404,6 @@ body {
     border-radius: 15px;
 }
 
-.add-goal {
+.goal-forms {
     margin: auto;
-}
-
-.add {
-
 }
