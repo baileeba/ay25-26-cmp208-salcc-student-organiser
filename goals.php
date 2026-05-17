@@ -53,54 +53,54 @@
 
         <div class= "goal-forms">
             <div class= "add-goal">
-                <h3>Create New Goal</h3>
+                <h3>create new goal</h3>
                 
-                <form id="createGoalForm" method="POST" action="api/create-goal.php">
+                <form id="createGoalForm" method="POST" action="api/create_goal.php">
 
-                    <label for="goalTitle">Goal Title</label>
+                    <label for="goalTitle">goal title</label>
                     <input type="text" id="goalTitle" name="title" required maxlength="150">
 
 
-                    <label for="goalDescription">Description</label>
+                    <label for="goalDescription">description</label>
                     <textarea id="goalDescription" name="description" rows="4"></textarea>
 
-                    <label for="goalTargetDate">Target Date</label>
+                    <label for="goalTargetDate">target date</label>
                     <input type="date" id="goalTargetDate" name="target_date" required>
                 
-                    <button type="submit" class="btn btn-primary">Create Goal</button>
+                    <button type="submit" class="btn btn-primary">create</button>
                 </form>
                 <div id="createGoalMessage" class="form-message"></div>
             </div>
 
             <div class= "update-goal">
-                <h3>Update Goal</h3>
-                <form id="updateGoalForm" method="POST" action="api/update-goal.php">
-                    <label for="selectGoal">Select Goal</label>
+                <h3>update goal</h3>
+                <form id="updateGoalForm" method="POST" action="api/update_goal.php">
+                    <label for="selectGoal">select goal</label>
                     <select id="selectGoal" name="goal_id" required>
-                        <option value="">-- Choose a goal --</option>
+                        <option value="">-- choose a goal! --</option>
                     </select>
                     
-                    <label for="updateGoalTitle">Goal Title</label>
+                    <label for="updateGoalTitle">goal title</label>
                     <input type="text" id="updateGoalTitle" name="title" maxlength="150">
 
-                    <label for="updateGoalDescription">Description</label>
+                    <label for="updateGoalDescription">description</label>
                     <textarea id="updateGoalDescription" name="description" rows="4"></textarea>
 
-                    <label for="updateGoalTargetDate">Target Date</label>
+                    <label for="updateGoalTargetDate">target date</label>
                     <input type="date" id="updateGoalTargetDate" name="target_date">
 
-                    <label for="progressPercentage">Progress (%)</label>
+                    <label for="progressPercentage">progress (%)</label>
                     <input type="number" id="progressPercentage" name="progress_percentage" min="0" max="100">
 
-                    <label for="goalStatus">Status</label>
+                    <label for="goalStatus">status</label>
                     <select id="goalStatus" name="status" required>
-                        <option value="active">Active</option>
-                        <option value="completed">Completed</option>
-                        <option value="abandoned">Abandoned</option>
+                        <option value="active">active</option>
+                        <option value="completed">completed</option>
+                        <option value="abandoned">abandoned</option>
                     </select>
 
-                    <button type="submit" class="btn btn-primary">Update Goal</button>
-                    <button type="button" class="btn btn-danger" id="deleteGoalBtn">Delete Goal</button>
+                    <button type="submit" class="btn btn-primary">update</button>
+                    <button type="button" class="btn btn-danger" id="deleteGoalBtn">delete</button>
                 </form>
                 <div id="updateGoalMessage" class="form-message"></div>
             </div>

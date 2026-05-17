@@ -7,5 +7,16 @@ document.querySelector(".writeHeader").innerHTML = `
             <a href="goals.php" class="${window.location.pathname.includes('goals') ? 'active' : ''}">goals</a>
             <a href="profile.php" class="${window.location.pathname.includes('profile') ? 'active' : ''}">me</a>
         </div>
-    </header>
-`;
+    </header>`
+;
+
+
+if(window.location.pathname.includes('/acc/')) {
+    const links = document.querySelectorAll('#nav a');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if(href && !href.startsWith('http') && !href.startsWith('/')) {
+            link.setAttribute('href', '../' + href);
+        }
+    });
+}

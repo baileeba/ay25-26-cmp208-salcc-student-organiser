@@ -48,18 +48,20 @@
             <div class = 'box1'>
                 <p id = 'editProfileBtn'>edit profile</p>
                 <p>edit categories</p>
+                <p>friends</p>
                 <p>import SONIS schedule</p>
                 <p>request email notifs</p>
                 <p>contact us</p>
             </div>
 
             <div class = 'box2'>
-                <p>log out</p>
+                <p id = "logoutBtn">log out</p>
                 <p>change password</p>
                 <p>sync to phone</p>
             </div>
         </div>
 
         <script src = "js/navbar.js" defer></script>
+        <script src = "js/profile.js" defer></script>
     </body>
 </html>

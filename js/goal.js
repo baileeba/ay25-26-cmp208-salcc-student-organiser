@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchUserGoal() {
-    fetch('/api/fetch_goal.php')
+    fetch('api/fetch_goal.php')
         .then(response => response.json())
         .then(data => {
             displayGoal(data);
@@ -15,16 +15,13 @@ function displayGoal(data) {
     const goalContainer = document.getElementById('goal');
     const defaultGoal = document.getElementById('defaultGoal');
 
-    if (data.success && data.goal) {
-        const goal = data.goal;
+    if (Array.isArray(data) && data.length > 0) {
+        const goal = data[0];
         
-        // hide default message
         defaultGoal.style.display = 'none';
         
-        // clear container
         goalContainer.innerHTML = '';
         
-        // calculate days until target
         const targetDate = new Date(goal.target_date);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -56,7 +53,6 @@ function displayGoal(data) {
         
         goalContainer.appendChild(goalElement);
     } else {
-        // show default message
         defaultGoal.style.display = 'block';
         goalContainer.innerHTML = defaultGoal.outerHTML;
     }
