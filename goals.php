@@ -1,3 +1,29 @@
+<?php
+
+    session_start();
+    include "acc/connect.php";
+
+    if(!isset($_SESSION["user_id"])) {
+        header("Location: acc/login.php");
+        exit();
+    }
+
+    $timeout_duration = 1800;
+
+    if(isset($_SESSION['last_activity'])) {
+        $idle_time = time() - $_SESSION['last_activity'];
+        if($idle_time > $timeout_duration) {
+            session_unset();
+            session_destroy();
+            header("Location: goals.php");
+            exit;
+        }
+    }
+
+    $_SESSION['last_activity'] = time();
+        
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,14 +55,14 @@
             <div class= "add-goal">
                 <h3>Create New Goal</h3>
                 
-                <form id="createGoalForm" method="POST" action="php/create-goal.php">
+                <form id="createGoalForm" method="POST" action="api/create-goal.php">
 
                     <label for="goalTitle">Goal Title</label>
                     <input type="text" id="goalTitle" name="title" required maxlength="150">
 
 
                     <label for="goalDescription">Description</label>
-                    <textarea id="goalDescription" name="description" placeholder="Enter goal description" rows="4"></textarea>
+                    <textarea id="goalDescription" name="description" rows="4"></textarea>
 
                     <label for="goalTargetDate">Target Date</label>
                     <input type="date" id="goalTargetDate" name="target_date" required>
@@ -48,7 +74,7 @@
 
             <div class= "update-goal">
                 <h3>Update Goal</h3>
-                <form id="updateGoalForm" method="POST" action="php/update-goal.php">
+                <form id="updateGoalForm" method="POST" action="api/update-goal.php">
                     <label for="selectGoal">Select Goal</label>
                     <select id="selectGoal" name="goal_id" required>
                         <option value="">-- Choose a goal --</option>
