@@ -81,6 +81,9 @@
                                 <label for="assignment-weight">Weight (%):</label>
                                 <input type="number" id="assignment-weight" min="0" max="100">
                             </div>
+                            <div class = "form-group">
+                                <label for="assignment-group">Add Collaborator:</label>
+                            </div>
                         </div>
                         <button type="submit" class="btn-primary">Add Assignment</button>
                     </form>
