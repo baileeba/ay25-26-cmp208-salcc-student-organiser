@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 session_start();
-include "acc/connect.php";
+include "../acc/connect.php";
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["error" => "not_logged_in"]);
@@ -64,12 +64,17 @@ if ($method === 'POST' && $_POST['action'] === 'create') {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        echo json_encode(["error" => "prepare_failed: " . $conn->error]);
+        exit;
+    }
+    
     $status = isset($_POST['status']) ? $_POST['status'] : 'not_started';
-    $weight = isset($_POST['weight_percentage']) ? $_POST['weight_percentage'] : null;
+    $weight = isset($_POST['weight_percentage']) && $_POST['weight_percentage'] !== '' ? (float)$_POST['weight_percentage'] : null;
     $is_group = isset($_POST['is_group_assignment']) ? 1 : 0;
 
     $stmt->bind_param(
-        "iissssdsii",
+        "iisssssdi",
         $user_id,
         $course_id,
         $_POST['title'],
@@ -85,8 +90,9 @@ if ($method === 'POST' && $_POST['action'] === 'create') {
     if ($stmt->execute()) {
         echo json_encode(["status" => "created", "assignment_id" => $stmt->insert_id]);
     } else {
-        echo json_encode(["error" => "failed_to_create"]);
+        echo json_encode(["error" => "failed_to_create: " . $stmt->error]);
     }
+    $stmt->close();
     exit;
 }
 
@@ -97,15 +103,17 @@ if ($method === 'POST' && $_POST['action'] === 'update') {
             WHERE assignment_id = ? AND user_id = ?";
 
     $stmt = $conn->prepare($sql);
+    $weight = isset($_POST['weight_percentage']) && $_POST['weight_percentage'] !== '' ? (float)$_POST['weight_percentage'] : null;
+    
     $stmt->bind_param(
-        "ssssdsii",
+        "sssssdi",
         $_POST['title'],
         $_POST['description'],
         $_POST['due_date'],
         $_POST['due_time'],
         $_POST['priority'],
         $_POST['status'],
-        $_POST['weight_percentage'],
+        $weight,
         $_POST['assignment_id'],
         $user_id
     );

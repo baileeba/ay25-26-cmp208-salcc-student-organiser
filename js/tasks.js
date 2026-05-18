@@ -5,7 +5,7 @@ let allCourses = [];
 
 const fetchCourses = async () => {
     try {
-        const response = await fetch('/api/search_users.php?action=get_courses');
+        const response = await fetch('api/search_users.php?action=get_courses');
         if (!response.ok) {
             throw new Error('Failed to fetch courses');
         }
@@ -32,7 +32,7 @@ const populateCourseDropdown = () => {
 
 const fetchAssignments = async () => {
     try {
-        const response = await fetch('/api/assignments.php');
+        const response = await fetch('api/assignments.php');
         if (!response.ok) {
             throw new Error('Failed to fetch assignments');
         }
@@ -48,7 +48,7 @@ const displayAssignments = () => {
     const container = document.getElementById('assignments-list');
     
     if (allAssignments.length === 0) {
-        container.innerHTML = '<p class="no-items">No active assignments</p>';
+        container.innerHTML = '<p class="no-items">no active assignments</p>';
         return;
     }
 
@@ -79,7 +79,7 @@ const displayAssignments = () => {
 
 const fetchReminders = async () => {
     try {
-        const response = await fetch('/api/reminders.php');
+        const response = await fetch('api/reminders.php');
         if (!response.ok) {
             throw new Error('Failed to fetch reminders');
         }
@@ -95,7 +95,7 @@ const displayReminders = () => {
     const container = document.getElementById('reminders-list');
     
     if (allReminders.length === 0) {
-        container.innerHTML = '<p class="no-items">No reminders</p>';
+        container.innerHTML = '<p class="no-items">no reminders</p>';
         return;
     }
 
@@ -116,70 +116,92 @@ const displayReminders = () => {
 };
 
 
-document.getElementById('add-assignment-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData();
-    formData.append('action', 'create');
-    formData.append('course_id', document.getElementById('assignment-course').value);
-    formData.append('title', document.getElementById('assignment-title').value);
-    formData.append('description', document.getElementById('assignment-description').value);
-    formData.append('due_date', document.getElementById('assignment-due-date').value);
-    formData.append('due_time', document.getElementById('assignment-due-time').value);
-    formData.append('priority', document.getElementById('assignment-priority').value);
-    formData.append('weight_percentage', document.getElementById('assignment-weight').value);
-
-    try {
-        const response = await fetch('/api/assignments.php', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
+const assignmentForm = document.getElementById('add-assignment-form');
+if (assignmentForm) {
+    assignmentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        if (result.error) {
-            alert('Error: ' + result.error);
-        } else {
-            alert('Assignment added successfully!');
-            document.getElementById('add-assignment-form').reset();
-            fetchAssignments();
+        const formData = new FormData();
+        formData.append('action', 'create');
+        formData.append('course_id', document.getElementById('assignment-course').value);
+        formData.append('title', document.getElementById('assignment-title').value);
+        formData.append('description', document.getElementById('assignment-description').value);
+        formData.append('due_date', document.getElementById('assignment-due-date').value);
+        formData.append('due_time', document.getElementById('assignment-due-time').value);
+        formData.append('priority', document.getElementById('assignment-priority').value);
+        formData.append('weight_percentage', document.getElementById('assignment-weight').value);
+
+        try {
+            const response = await fetch('api/assignments.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            
+            if (result.error) {
+                alert('Error: ' + result.error);
+            } else {
+                alert('Assignment added successfully!');
+                document.getElementById('add-assignment-form').reset();
+                fetchAssignments();
+            }
+        } catch (error) {
+            console.error('Error adding assignment:', error);
+            alert('Failed to add assignment');
         }
-    } catch (error) {
-        console.error('Error adding assignment:', error);
-        alert('Failed to add assignment');
-    }
-});
+    });
+} else {
+    console.error('add-assignment-form not found');
+}
 
 
-document.getElementById('add-reminder-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = new FormData();
-    formData.append('action', 'create');
-    formData.append('title', document.getElementById('reminder-text').value);
-    formData.append('date', document.getElementById('reminder-date').value);
-    formData.append('color', document.getElementById('reminder-color').value);
-
-    try {
-        const response = await fetch('/api/reminders.php', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
+const reminderForm = document.getElementById('add-reminder-form');
+if (reminderForm) {
+    reminderForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
         
-        if (result.error) {
-            alert('Error: ' + result.error);
-        } else {
-            alert('Reminder added successfully!');
-            document.getElementById('add-reminder-form').reset();
-            fetchReminders();
+        const reminderText = document.getElementById('reminder-text').value;
+        const reminderDate = document.getElementById('reminder-date').value;
+        const reminderTime = document.getElementById('reminder-time').value;
+        const reminderColor = document.getElementById('reminder-color').value;
+        
+        console.log('Submitting reminder:', { reminderText, reminderDate, reminderTime, reminderColor });
+        
+        const formData = new FormData();
+        formData.append('action', 'create');
+        formData.append('title', reminderText);
+        formData.append('date', reminderDate);
+        if (reminderTime) {
+            formData.append('time', reminderTime);
         }
-    } catch (error) {
-        console.error('Error adding reminder:', error);
-        alert('Failed to add reminder');
-    }
-});
+        formData.append('color', reminderColor);
+
+        try {
+            const response = await fetch('api/reminders.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            console.log('API Response:', result);
+            
+            if (result.error) {
+                alert('Error: ' + result.error);
+                console.error('Server error:', result);
+            } else {
+                alert('Reminder added successfully!');
+                document.getElementById('add-reminder-form').reset();
+                fetchReminders();
+            }
+        } catch (error) {
+            console.error('Error adding reminder:', error);
+            alert('Failed to add reminder');
+        }
+    });
+} else {
+    console.error('add-reminder-form not found');
+}
 
 
 const deleteAssignment = async (assignmentId) => {
@@ -190,7 +212,7 @@ const deleteAssignment = async (assignmentId) => {
     formData.append('assignment_id', assignmentId);
 
     try {
-        const response = await fetch('/api/assignments.php', {
+        const response = await fetch('api/assignments.php', {
             method: 'POST',
             body: formData
         });
@@ -218,7 +240,7 @@ const deleteReminder = async (reminderId) => {
     formData.append('id', reminderId);
 
     try {
-        const response = await fetch('/api/reminders.php', {
+        const response = await fetch('api/reminders.php', {
             method: 'POST',
             body: formData
         });
@@ -238,6 +260,14 @@ const deleteReminder = async (reminderId) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Tasks page loaded, initializing...');
+    console.log('Form elements:', {
+        assignmentForm: !!document.getElementById('add-assignment-form'),
+        reminderForm: !!document.getElementById('add-reminder-form'),
+        assignmentsList: !!document.getElementById('assignments-list'),
+        remindersList: !!document.getElementById('reminders-list')
+    });
+    
     fetchCourses();
     fetchAssignments();
     fetchReminders();
