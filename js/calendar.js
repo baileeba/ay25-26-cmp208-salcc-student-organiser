@@ -1,142 +1,126 @@
-const monthYearElement = document.getElementById('monthYear');
-const datesElement = document.getElementById('dates');
-const rememberElement = document.getElementById('remember');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
+let currentWeekDate = new Date();
+let weekEvents = [];
 
-let currentDate = new Date();
-let selectedDate = null;
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const dayIds = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-let remindersData = [];
+// get monday of the current week
+const getMondayOfWeek = (date) => {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+};
 
-// get reminders database
-const fetchReminders = async () => {
+// format date for display
+const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+// get weekly calendar data
+const fetchWeeklyCalendar = async (weekDate) => {
     try {
-        const response = await fetch('/api/reminders.php');
+        const response = await fetch('/api/weekly_calendar.php');
         if (!response.ok) {
-            throw new Error('server error');
+            throw new Error('Failed to fetch calendar');
         }
-        remindersData = await response.json();
-        console.log(remindersData);
+        weekEvents = await response.json();
+        updateWeeklyDisplay(weekDate);
     } catch (error) {
-        console.error('failed to fetch reminders:', error);
+        console.error('Error fetching calendar:', error);
+        // Set fallback title even if fetch fails
+        updateWeeklyDisplay(weekDate);
     }
 };
 
-// get reminders for a specific date
-const getRemindersForDate = (year, month, day) => {
-    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return remindersData.filter(reminder => reminder.date === dateString);
+// get events for a specific date
+const getEventsForDate = (dateString) => {
+    return weekEvents.events ? weekEvents.events.filter(event => event.date === dateString) : [];
 };
 
-// display reminders remember
-const displayReminders = (year, month, day) => {
-
-    // hide default message
-    const defaultMsg = document.getElementById('defaultReminder');
-    if (defaultMsg) {
-        defaultMsg.style.display = 'none';
+// create event element
+const createEventElement = (event) => {
+    if (event.category === 'reminder') {
+        return `
+            <div class="event-item reminder-event" style="border-left: 4px solid ${event.color || '#3498db'}">
+                <div class="event-time">${event.time || 'All day'}</div>
+                <div class="event-title">${event.text}</div>
+                <div class="event-type">${event.type}</div>
+            </div>
+        `;
+    } else if (event.category === 'class') {
+        return `
+            <div class="event-item class-event" style="border-left: 4px solid #27ae60">
+                <div class="event-code">${event.course_code}</div>
+                <div class="event-title">${event.course_name}</div>
+                <div class="event-time">${event.start_time} - ${event.end_time}</div>
+                <div class="event-location">📍 ${event.location || 'TBA'}</div>
+            </div>
+        `;
     }
-
-    const reminders = getRemindersForDate(year, month, day);
-    
-    let html = '';
-    
-    if (reminders.length === 0) {
-        html = '<p class="no-reminders">no reminders for this date</p>';
-    } else {
-        html = `<h3>${new Date(year, month, day).toLocaleDateString('default', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h3>`;
-        html += '<div class="reminders-list">';
-        
-        reminders.forEach(reminder => {
-            html += `
-                <div class="reminder-item">
-                    <div class="reminder-color-line" style="background-color: ${reminder.color};"></div>
-                    <div class="reminder-content">
-                        <p class="reminder-title">${reminder.title}</p>
-                    </div>
-                </div>
-            `;
-        });
-        
-        html += '</div>';
-    }
-    
-    rememberElement.innerHTML = html;
 };
 
-// check that date has reminders
-const hasReminders = (year, month, day) => {
-    return getRemindersForDate(year, month, day).length > 0;
-};
+// update the weekly calendar display
+const updateWeeklyDisplay = (weekDate) => {
+    const monday = getMondayOfWeek(weekDate);
+    const weekEnd = new Date(monday);
+    weekEnd.setDate(weekEnd.getDate() + 6);
 
-const updateCalendar = () => {
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
-
-    const firstDay = new Date(currentYear, currentMonth, 1);
-    const lastDay = new Date(currentYear, currentMonth + 1, 0);
-
-    const totalDays = lastDay.getDate();
-    const firstDayIndex = firstDay.getDay();
-    const lastDayIndex = lastDay.getDay();
-
-    const monthYearString = currentDate.toLocaleString('default', {
-        month: 'long',
-        year: 'numeric'
-    });
-    monthYearElement.textContent = monthYearString;
-
-    let datesHTML = '';
-
-    // previous month dates
-    for (let i = firstDayIndex; i > 0; i--) {
-        const prevDate = new Date(currentYear, currentMonth, 1 - i);
-        datesHTML += `<div class="date inactive">${prevDate.getDate()}</div>`;
+    // update header
+    const weekTitleElement = document.getElementById('weekTitle');
+    if (weekTitleElement) {
+        const titleText = `Week of ${formatDate(monday)} - ${formatDate(weekEnd)}`;
+        weekTitleElement.textContent = titleText;
     }
 
-    // current month dates
-    for (let i = 1; i <= totalDays; i++) {
-        const date = new Date(currentYear, currentMonth, i);
-        const isToday = date.toDateString() === new Date().toDateString() ? 'active' : '';
-        const hasReminder = hasReminders(currentYear, currentMonth, i);
-        const reminderClass = hasReminder ? 'has-reminder' : '';
+    // clear and populate each day
+    dayIds.forEach((dayId, index) => {
+        const dayDate = new Date(monday);
+        dayDate.setDate(dayDate.getDate() + index);
+        const dateString = dayDate.toISOString().split('T')[0];
 
-        datesHTML += `<div class="date ${isToday} ${reminderClass}" data-day="${i}">${i}</div>`;
-    }
+        const dayColumn = document.getElementById(dayId);
+        const eventsContainer = dayColumn.querySelector('.events-container');
+        const dayHeader = dayColumn.querySelector('.day-name');
 
-    // next month dates
-    for (let i = 1; i <= 6 - lastDayIndex; i++) {
-        const nextDate = new Date(currentYear, currentMonth + 1, i);
-        datesHTML += `<div class="date inactive">${nextDate.getDate()}</div>`;
-    }
+        // update day header with date
+        dayHeader.innerHTML = `
+            ${days[index]}<br>
+            <span class="day-date">${formatDate(dayDate)}</span>
+        `;
 
-    datesElement.innerHTML = datesHTML;
+        // get events for this day
+        const dayEvents = getEventsForDate(dateString);
 
-    // add click listeners to date elements
-    document.querySelectorAll('.date:not(.inactive)').forEach(dateElement => {
-        dateElement.addEventListener('click', () => {
-            const day = parseInt(dateElement.getAttribute('data-day'));
-            selectedDate = new Date(currentYear, currentMonth, day);
-            displayReminders(currentYear, currentMonth, day);
-
-            // update selected date styling
-            document.querySelectorAll('.date').forEach(el => el.classList.remove('selected'));
-            dateElement.classList.add('selected');
-        });
+        // populate events
+        if (dayEvents.length === 0) {
+            eventsContainer.innerHTML = '<p class="no-events">No events</p>';
+        } else {
+            eventsContainer.innerHTML = dayEvents
+                .map(event => createEventElement(event))
+                .join('');
+        }
     });
 };
 
-// nav
-prevBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendar();
-});
+// navigation
+const prevWeekBtn = document.getElementById('prevWeek');
+const nextWeekBtn = document.getElementById('nextWeek');
 
-nextBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendar();
-});
+if (prevWeekBtn) {
+    prevWeekBtn.addEventListener('click', () => {
+        currentWeekDate.setDate(currentWeekDate.getDate() - 7);
+        fetchWeeklyCalendar(currentWeekDate);
+    });
+}
 
-// initialize
-fetchReminders().then(() => updateCalendar());
+if (nextWeekBtn) {
+    nextWeekBtn.addEventListener('click', () => {
+        currentWeekDate.setDate(currentWeekDate.getDate() + 7);
+        fetchWeeklyCalendar(currentWeekDate);
+    });
+}
+
+if (document.getElementById('monday')) {
+    fetchWeeklyCalendar(currentWeekDate);
+}

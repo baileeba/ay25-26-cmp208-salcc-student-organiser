@@ -92,7 +92,7 @@
 
         </div>
         <script src = "js/navbar.js" defer></script>
-        <script src = "js/calendar.js" defer></script>
+        <script src = "js/mini-calendar.js" defer></script>
         <script src = "js/upcoming.js" defer></script>
         <script src = "js/goal.js" defer></script>
     </body>
