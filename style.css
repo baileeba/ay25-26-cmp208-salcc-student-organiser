@@ -515,3 +515,43 @@ body {
     padding: 10px;
     gap: 10px 10px;
 }
+
+.assignments {
+    margin: auto;
+    background-color: #b5eda8;
+    border: 3px transparent solid;
+    min-height: 350px;
+    min-width: 400px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.add-assignment {
+    margin: auto;
+    background-color: lightcoral;
+    border: 3px transparent solid;
+    min-height: 350px;
+    min-width: 400px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#reminders {
+    margin: auto;
+    background-color: #b5eda8;
+    border: 3px transparent solid;
+    min-height: 350px;
+    min-width: 400px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.add-reminder {
+    margin: auto;
+    background-color: lightcoral;
+    border: 3px transparent solid;
+    min-height: 350px;
+    min-width: 400px;
+    border-radius: 10px;
+    padding: 20px;
+}

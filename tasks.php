@@ -50,16 +50,13 @@
                     <h2>Add Assignment</h2>
                     <form id="add-assignment-form" class="task-form">
                         <div class="form-group">
-                            <label for="assignment-course">Course:</label>
                             <select id="assignment-course" required></select>
                         </div>
                         <div class="form-group">
-                            <label for="assignment-title">Title:</label>
-                            <input type="text" id="assignment-title" required>
+                            <input type="text" id="assignment-title" placeholder="title" required>
                         </div>
                         <div class="form-group">
-                            <label for="assignment-description">Description:</label>
-                            <textarea id="assignment-description"></textarea>
+                            <textarea id="assignment-description" placeholder="description"></textarea>
                         </div>
                         <div class="form-row">
                             <div class="form-group">

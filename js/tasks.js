@@ -19,7 +19,7 @@ const fetchCourses = async () => {
 
 const populateCourseDropdown = () => {
     const courseSelect = document.getElementById('assignment-course');
-    courseSelect.innerHTML = '<option value="">Select a course</option>';
+    courseSelect.innerHTML = '<option value="">course</option>';
     
     allCourses.forEach(course => {
         const option = document.createElement('option');
