@@ -11,7 +11,8 @@
 
     <body>
         <div align = "center">
-            <div class= "writeHeader"></div>
+            <div class= "writeHeader">
+        </div>
 
             <div class="calendar-container">
                 <div class="calendar-header">
@@ -22,36 +23,47 @@
 
                 <div class="weekly-calendar">
                     <div id="monday" class="day-column">
-                        <h3 class="day-name">Monday</h3>
+                        <h3 class="day-name">M</h3>
                         <div class="events-container"></div>
                     </div>
                     <div id="tuesday" class="day-column">
-                        <h3 class="day-name">Tuesday</h3>
+                        <h3 class="day-name">T</h3>
                         <div class="events-container"></div>
                     </div>
                     <div id="wednesday" class="day-column">
-                        <h3 class="day-name">Wednesday</h3>
+                        <h3 class="day-name">W</h3>
                         <div class="events-container"></div>
                     </div>
                     <div id="thursday" class="day-column">
-                        <h3 class="day-name">Thursday</h3>
+                        <h3 class="day-name">Th</h3>
                         <div class="events-container"></div>
                     </div>
                     <div id="friday" class="day-column">
-                        <h3 class="day-name">Friday</h3>
+                        <h3 class="day-name">F</h3>
                         <div class="events-container"></div>
                     </div>
                     <div id="saturday" class="day-column">
-                        <h3 class="day-name">Saturday</h3>
+                        <h3 class="day-name">S</h3>
                         <div class="events-container"></div>
                     </div>
                     <div id="sunday" class="day-column">
-                        <h3 class="day-name">Sunday</h3>
+                        <h3 class="day-name">Su</h3>
                         <div class="events-container"></div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class = "edit-category">
+                <button id = "editCategoryBtn"><h2>edit category</h2></button>
+            </div>
+
+            <div class= "filter">
+                <h2>filter by:</h2>
+                <button id="filterAll" class="filter-btn active">all</button>
+                <button id="filterReminders" class="filter-btn">reminders</button>
+                <button id="filterClasses" class="filter-btn">classes</button>
+                <button id="filterCategory" class="filter-btn">category</button>
+            </div>
 
         <script src = "js/navbar.js" defer></script>
         <script src = "js/calendar.js" defer></script>
