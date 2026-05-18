@@ -40,26 +40,88 @@
             <div class= "writeHeader">
         </div>
 
-        <div class = "tasks">
-            <div class = "assignments">
-                <h2>Assignments</h2>
-            </div>
+            <div class="tasks">
+                <div class= "assignments">
+                    <h2>Assignments</h2>
+                    <div id="assignments-list" class="list-container"></div>
+                </div>
 
-            <div class = "add-assignment">
-                <h2>Add Assignment</h2>
-            </div>
+                <div class= "add-assignment">
+                    <h2>Add Assignment</h2>
+                    <form id="add-assignment-form" class="task-form">
+                        <div class="form-group">
+                            <label for="assignment-course">Course:</label>
+                            <select id="assignment-course" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignment-title">Title:</label>
+                            <input type="text" id="assignment-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignment-description">Description:</label>
+                            <textarea id="assignment-description"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="assignment-due-date">Due Date:</label>
+                                <input type="date" id="assignment-due-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="assignment-due-time">Due Time:</label>
+                                <input type="time" id="assignment-due-time">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="assignment-priority">Priority:</label>
+                                <select id="assignment-priority">
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="assignment-weight">Weight (%):</label>
+                                <input type="number" id="assignment-weight" min="0" max="100">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Assignment</button>
+                    </form>
+                </div>
 
-            <div id = "reminders">
-                <h2>Reminders</h2>
-            </div>
+                <div id = "reminders">
+                    <h2>Reminders</h2>
+                    <div id="reminders-list" class="list-container"></div>
+                </div>
 
-            <div class = "add-reminder">
-                <h2>Add Reminder</h2>
+                <div class= "add-reminder">
+                    <h2>Add Reminder</h2>
+                    <form id="add-reminder-form" class="task-form">
+                        <div class="form-group">
+                            <label for="reminder-text">Reminder:</label>
+                            <textarea id="reminder-text" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reminder-date">Date:</label>
+                                <input type="date" id="reminder-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reminder-time">Time:</label>
+                                <input type="time" id="reminder-time">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reminder-color">Color:</label>
+                            <input type="color" id="reminder-color" value="#3498db">
+                        </div>
+                        <button type="submit" class="btn-primary">Add Reminder</button>
+                    </form>
+                </div>
             </div>
-
         </div>
 
         <script src = "js/navbar.js" defer></script>
-        <script src = "js/calendar.js" defer></script>
+        <script src = "js/tasks.js" defer></script>
     </body>
 </html>
