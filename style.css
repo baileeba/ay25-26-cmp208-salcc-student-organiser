@@ -507,3 +507,11 @@ body {
 #contactForm button:hover {
     background-color: #9fd088;
 }
+
+/* tasks page */
+.tasks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    gap: 10px 10px;
+}

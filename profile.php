@@ -40,7 +40,7 @@
         </div>
 
         <div class= "profile-dash">
-            <div class = 'images'><
+            <div class = 'images'>
                 <img src = 'assets/PFPDEFAULT.png' class = 'profile'>
                 <img src= "assets/HELLOBUBBLE.png" class = 'bubble'>
             </div>
