@@ -103,7 +103,7 @@ const updateCalendar = () => {
         const reminders = getRemindersForDate(currentYear, currentMonth, i);
         const hasReminder = reminders.length > 0 ? 'has-reminder' : '';
         
-        // Create color dots for up to 3 reminders
+        
         let dotsHTML = '';
         if (reminders.length > 0) {
             const displayReminders = reminders.slice(0, 3);

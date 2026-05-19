@@ -53,18 +53,18 @@ const displayUpcoming = () => {
     upcomingElement.innerHTML = html;
 };
 
-// Wait for mini-calendar to fetch reminders, then display upcoming
+
 const initializeUpcoming = async () => {
-    // Wait for mini-calendar to fetch reminders (it exposes fetchReminders globally)
+    
     if (window.fetchReminders) {
         await window.fetchReminders();
     }
     displayUpcoming();
 };
 
-// initialize
+
 if (upcomingElement) {
-    // If mini-calendar hasn't loaded yet, wait a bit and try
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(initializeUpcoming, 100);

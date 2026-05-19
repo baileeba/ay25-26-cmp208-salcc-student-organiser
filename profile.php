@@ -114,6 +114,29 @@
             </div>
         </div>
 
+        <div id="importModal">
+            <div id="importModalContent">
+                <div id="importModalHeader">
+                    <h2>Import SONIS Schedule</h2>
+                    <span id="closeImportModal">&times;</span>
+                </div>
+                <div id="importValidationError" style="display: none;">
+                    <p id="importErrorMessage"></p>
+                </div>
+                <div id="importSuccessMessage" style="display: none;">
+                    <p>Your schedule has been imported successfully!</p>
+                </div>
+                <form id="importForm" enctype="multipart/form-data">
+                    <label for="pdfFile">Select PDF File:</label>
+                    <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" required>
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;">Please upload your SONIS schedule PDF file</p>
+                    
+                    <button type="submit" name="submit">Upload and Import</button>
+                    <button type="button" id="cancelImport">Cancel</button>
+                </form>
+            </div>
+        </div>
+
         <script src = "js/navbar.js" defer></script>
         <script src = "js/profile.js" defer></script>
     </body>

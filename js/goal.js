@@ -28,7 +28,7 @@ function displayGoal(data) {
         targetDate.setHours(0, 0, 0, 0);
         const daysUntil = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
         
-        // create goal display
+        
         const goalElement = document.createElement('div');
         goalElement.className = 'goal-card';
         goalElement.innerHTML = `
