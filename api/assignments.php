@@ -130,7 +130,7 @@ if ($method === 'POST' && $action === 'create') {
         exit;
     }
 
-    $course_id = (int) $_POST['course_id'];
+    $course_id = $_POST['course_id'];
 
     $title = trim($_POST['title']);
 
@@ -160,7 +160,7 @@ if ($method === 'POST' && $action === 'create') {
         $group_stmt = $conn->prepare($group_sql);
 
         $group_stmt->bind_param(
-            "ssii",
+            "ssis",
             $group_name,
             $group_description,
             $course_id,
@@ -224,7 +224,7 @@ if ($method === 'POST' && $action === 'create') {
     $stmt = $conn->prepare($sql);
 
     $stmt->bind_param(
-        "iisssssiii",
+        "isssssiii",
         $user_id,
         $course_id,
         $title,

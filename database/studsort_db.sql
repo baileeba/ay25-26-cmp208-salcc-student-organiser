@@ -18,8 +18,7 @@ CREATE TABLE courses (
   course_code VARCHAR(20) NOT NULL,
   course_name VARCHAR(100) NOT NULL,
   instructor VARCHAR(100),
-  semester VARCHAR(20),
-  credits INT,
+  credits DECIMAL(4,2),
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 

@@ -1,15 +1,75 @@
-document.getElementById('editProfileBtn').addEventListener('click', function() {
-    window.location.href = './acc/edit_profile.php';
-});
-
-document.getElementById('editCategoriesBtn').addEventListener('click', function() {
-    // Placeholder for edit categories functionality
-    alert('Edit categories functionality coming soon!');
-});
-
 document.getElementById('importBtn').addEventListener('click', function() {
-    // Placeholder for import SONIS schedule functionality
-    alert('Import SONIS schedule functionality coming soon!');
+    document.getElementById('importModal').style.display = 'block';
+    document.getElementById('importValidationError').style.display = 'none';
+    document.getElementById('importSuccessMessage').style.display = 'none';
+});
+
+document.getElementById('closeImportModal').addEventListener('click', function() {
+    document.getElementById('importModal').style.display = 'none';
+});
+
+document.getElementById('cancelImport').addEventListener('click', function() {
+    document.getElementById('importModal').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('importModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+
+document.getElementById('importForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const fileInput = document.getElementById('pdfFile');
+    const file = fileInput.files[0];
+    const errorDiv = document.getElementById('importValidationError');
+    const successDiv = document.getElementById('importSuccessMessage');
+    const errorMsg = document.getElementById('importErrorMessage');
+    
+    if (!file) {
+        errorMsg.textContent = 'Please select a PDF file.';
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+        return;
+    }
+    
+    if (file.type !== 'application/pdf') {
+        errorMsg.textContent = 'Please select a valid PDF file.';
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+        return;
+    }
+    
+    
+    const formData = new FormData();
+    formData.append('pdfFile', file);
+    
+    fetch('./api/import.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'block';
+            document.getElementById('importForm').reset();
+            setTimeout(() => {
+                document.getElementById('importModal').style.display = 'none';
+            }, 2000);
+        } else {
+            errorMsg.textContent = data.error || 'Failed to import schedule.';
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        }
+    })
+    .catch(error => {
+        errorMsg.textContent = 'Error: ' + error.message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+    });
 });
 
 document.getElementById('friendsBtn').addEventListener('click', function() {

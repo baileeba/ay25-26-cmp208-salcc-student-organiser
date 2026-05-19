@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $stmt->bind_param("ssss", $name, $username, $email, $password);
 
         if ($stmt->execute()) {
-            echo "Record saved successfully!";
+            echo "Thank you for signing up!";
         } else {
             echo "Error: ".$stmt->error;
         }
