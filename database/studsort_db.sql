@@ -155,3 +155,17 @@ CREATE TABLE notifications (
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   INDEX (user_id, send_date, is_sent)
 );
+
+
+DELIMITER $$
+
+CREATE TRIGGER delete_friend_request_on_accepted
+AFTER UPDATE ON friend_requests
+FOR EACH ROW
+BEGIN
+    IF NEW.status IN ('accepted', 'declined') THEN
+        DELETE FROM friend_requests WHERE request_id = NEW.request_id;
+    END IF;
+END$$
+
+DELIMITER ;

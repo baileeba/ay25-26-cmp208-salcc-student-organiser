@@ -41,15 +41,6 @@
     $sender_id = $request_data['sender_id'];
 
     if ($action === 'accepted') {
-        $update_query = "
-            UPDATE friend_requests 
-            SET status = 'accepted'
-            WHERE request_id = ?
-        ";
-        $stmt = $conn->prepare($update_query);
-        $stmt->bind_param("i", $request_id);
-        $stmt->execute();
-
         $friendship_query = "
             INSERT INTO friendships (user_id_1, user_id_2)
             VALUES (?, ?)
@@ -58,17 +49,19 @@
         $stmt->bind_param("ii", $user_id, $sender_id);
 
         if ($stmt->execute()) {
+            // Delete the friend request after accepting
+            $delete_query = "DELETE FROM friend_requests WHERE request_id = ?";
+            $delete_stmt = $conn->prepare($delete_query);
+            $delete_stmt->bind_param("i", $request_id);
+            $delete_stmt->execute();
+            
             echo json_encode(['success' => true, 'message' => 'Friend request accepted']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to accept friend request']);
         }
     } else if ($action === 'declined') {
-        $update_query = "
-            UPDATE friend_requests 
-            SET status = 'declined'
-            WHERE request_id = ?
-        ";
-        $stmt = $conn->prepare($update_query);
+        $delete_query = "DELETE FROM friend_requests WHERE request_id = ?";
+        $stmt = $conn->prepare($delete_query);
         $stmt->bind_param("i", $request_id);
 
         if ($stmt->execute()) {
