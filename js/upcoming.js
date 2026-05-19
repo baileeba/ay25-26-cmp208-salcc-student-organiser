@@ -2,6 +2,8 @@ const upcomingElement = document.getElementById('upcoming');
 
 // display upcoming reminders
 const displayUpcoming = () => {
+    // Use globally available remindersData from mini-calendar.js
+    const remindersData = window.remindersData || [];
 
     const today = new Date();
 
@@ -51,5 +53,23 @@ const displayUpcoming = () => {
     upcomingElement.innerHTML = html;
 };
 
+// Wait for mini-calendar to fetch reminders, then display upcoming
+const initializeUpcoming = async () => {
+    // Wait for mini-calendar to fetch reminders (it exposes fetchReminders globally)
+    if (window.fetchReminders) {
+        await window.fetchReminders();
+    }
+    displayUpcoming();
+};
+
 // initialize
-fetchReminders().then(() => displayUpcoming());
+if (upcomingElement) {
+    // If mini-calendar hasn't loaded yet, wait a bit and try
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initializeUpcoming, 100);
+        });
+    } else {
+        setTimeout(initializeUpcoming, 100);
+    }
+}
