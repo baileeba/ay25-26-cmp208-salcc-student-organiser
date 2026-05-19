@@ -20,7 +20,7 @@ const formatDate = (date) => {
 // get weekly calendar data
 const fetchWeeklyCalendar = async (weekDate) => {
     try {
-        const response = await fetch('/api/weekly_calendar.php');
+        const response = await fetch('api/weekly_calendar.php');
         if (!response.ok) {
             throw new Error('Failed to fetch calendar');
         }
@@ -124,3 +124,22 @@ if (nextWeekBtn) {
 if (document.getElementById('monday')) {
     fetchWeeklyCalendar(currentWeekDate);
 }
+
+const editCategoryBtn = document.getElementById('editCategoryBtn');
+const categoryModal = document.getElementById('categoryModal');
+const closeCategoryModal = document.getElementById('closeCategoryModal');
+
+editCategoryBtn.addEventListener('click', () => {
+    categoryModal.style.display = 'block';
+});
+
+closeCategoryModal.addEventListener('click', () => {
+    categoryModal.style.display = 'none';
+});
+
+// close if user clicks outside the modal content
+window.addEventListener('click', (e) => {
+    if (e.target === categoryModal) {
+        categoryModal.style.display = 'none';
+    }
+});

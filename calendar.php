@@ -15,7 +15,7 @@
         if($idle_time > $timeout_duration) {
             session_unset();
             session_destroy();
-            header("Location: index.php");
+            header("Location: calendar.php");
             exit;
         }
     }
@@ -39,6 +39,18 @@
         <div align = "center">
             <div class= "writeHeader">
         </div>
+
+            <div class = "edit-category">
+                <button id = "editCategoryBtn"><h2>edit category</h2></button>
+            </div>
+
+            <div class="filter">
+                <h2>filter by:</h2>
+                <button id="filterAll" class="filter-btn active">all</button>
+                <button id="filterReminders" class="filter-btn">reminders</button>
+                <button id="filterClasses" class="filter-btn">classes</button>
+                <button id="filterCategory" class="filter-btn">category</button>
+            </div>
 
             <div class="calendar-container">
                 <div class="calendar-header">
@@ -79,17 +91,16 @@
                 </div>
             </div>
 
-            <div class = "edit-category">
-                <button id = "editCategoryBtn"><h2>edit category</h2></button>
+            <!-- edit categories popup -->
+            <div class="category-modal" id="categoryModal">
+                <div class="category-modal-content">
+                    <button class="close-modal" id="closeCategoryModal">&times;</button>
+                    <h3>add category</h3>
+                    <input type="text" placeholder="name">
+                    <input type="text" placeholder="colour">
+                </div>
             </div>
 
-            <div class= "filter">
-                <h2>filter by:</h2>
-                <button id="filterAll" class="filter-btn active">all</button>
-                <button id="filterReminders" class="filter-btn">reminders</button>
-                <button id="filterClasses" class="filter-btn">classes</button>
-                <button id="filterCategory" class="filter-btn">category</button>
-            </div>
 
         <script src = "js/navbar.js" defer></script>
         <script src = "js/calendar.js" defer></script>

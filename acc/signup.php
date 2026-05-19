@@ -56,8 +56,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <link rel = 'icon' href = 'assets/GREEN_FOLDER.png'>
 	</head>
 	
-	<body>
+	<body class="signup-body">
 		<h1>Sign Up</h1>
+        <div class="signup-card">
 		<form action = "signup.php" method = "post">
 			<label>Full Name:</label><br>
 			<input type = "text" name = "name"><br><br>
@@ -71,6 +72,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			<input type = "password" name = "confirm_password"><br><br>
 			<input type = "submit" value = "Sign Up">
 		</form>
+
+        </div>
 
         <a href= "login.php">back</a>
 	</body>

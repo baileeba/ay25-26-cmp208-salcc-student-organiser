@@ -100,10 +100,21 @@ const updateCalendar = () => {
     for (let i = 1; i <= totalDays; i++) {
         const date = new Date(currentYear, currentMonth, i);
         const isToday = date.toDateString() === new Date().toDateString() ? 'active' : '';
-        const hasReminder = hasReminders(currentYear, currentMonth, i);
-        const reminderClass = hasReminder ? 'has-reminder' : '';
+        const reminders = getRemindersForDate(currentYear, currentMonth, i);
+        const hasReminder = reminders.length > 0 ? 'has-reminder' : '';
+        
+        // Create color dots for up to 3 reminders
+        let dotsHTML = '';
+        if (reminders.length > 0) {
+            const displayReminders = reminders.slice(0, 3);
+            dotsHTML = '<div class="reminder-dots">';
+            displayReminders.forEach(reminder => {
+                dotsHTML += `<div class="reminder-dot" style="background-color: ${reminder.color || '#3498db'};"></div>`;
+            });
+            dotsHTML += '</div>';
+        }
 
-        datesHTML += `<div class="date ${isToday} ${reminderClass}" data-day="${i}">${i}</div>`;
+        datesHTML += `<div class="date ${isToday} ${hasReminder}" data-day="${i}">${i}${dotsHTML}</div>`;
     }
 
 

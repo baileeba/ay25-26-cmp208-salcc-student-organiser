@@ -15,7 +15,7 @@
         if($idle_time > $timeout_duration) {
             session_unset();
             session_destroy();
-            header("Location: index.php");
+            header("Location: tasks.php");
             exit;
         }
     }
@@ -81,13 +81,9 @@
                                 <label for="assignment-weight">Weight (%):</label>
                                 <input type="number" id="assignment-weight" min="0" max="100">
                             </div>
-                            <div class="form-group">
-                                <label for="assignment-collaborator">Add Group Members:</label>
-                                <div class="collaborator-section">
-                                    <select id="assignment-collaborator"></select>
-                                    <button type="button" id="btn-add-collaborator" class="btn-secondary">Add</button>
-                                </div>
-                                <div id="collaborators-list" class="collaborators-list"></div>
+
+                            <div class = "form-group">
+                                <label for="assignment-group">Add Collaborator:</label>
                             </div>
                         </div>
                         <button type="submit" class="btn-primary">Add Assignment</button>
@@ -123,6 +119,14 @@
                         <button type="submit" class="btn-primary">Add Reminder</button>
                     </form>
                 </div>
+            </div>
+            <!-- collaborator popup -->
+        <div class="collaborator-popup" id="collaboratorPopup">
+            <div class="collaborator-popup-content">
+                <button class="close-modal" id="closeCollaboratorPopup">&times;</button>
+                <h3>add collaborator</h3>
+                <input type="text" id="collaboratorEmail" placeholder="email@salcc.edu">
+                <button class="send-btn" onclick="document.getElementById('collaboratorPopup').style.display='none'">send</button>
             </div>
         </div>
 
