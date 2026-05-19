@@ -1,6 +1,7 @@
 let allAssignments = [];
 let allReminders = [];
 let allCourses = [];
+let selectedCollaborators = [];
 
 
 const fetchCourses = async () => {
@@ -30,9 +31,85 @@ const populateCourseDropdown = () => {
 };
 
 
+const fetchFriends = async () => {
+    try {
+        const response = await fetch('api/assignments.php?action=get_friends');
+        if (!response.ok) {
+            throw new Error('Failed to fetch friends');
+        }
+        const friends = await response.json();
+        populateFriendsDropdown(friends);
+    } catch (error) {
+        console.error('Error fetching friends:', error);
+    }
+};
+
+
+const populateFriendsDropdown = (friends) => {
+    const select = document.getElementById('assignment-collaborator');
+    select.innerHTML = '<option value="">select a friend to add...</option>';
+    
+    friends.forEach(friend => {
+        const option = document.createElement('option');
+        option.value = friend.user_id;
+        option.textContent = `${friend.name} (@${friend.username})`;
+        select.appendChild(option);
+    });
+};
+
+
+const addCollaborator = () => {
+    const select = document.getElementById('assignment-collaborator');
+    const collaborator_id = select.value;
+    const collaborator_text = select.options[select.selectedIndex].text;
+    
+    if (!collaborator_id) {
+        alert('please select a friend');
+        return;
+    }
+    
+    
+    if (selectedCollaborators.find(c => c.id === parseInt(collaborator_id))) {
+        alert('this person is already added');
+        return;
+    }
+    
+    selectedCollaborators.push({
+        id: parseInt(collaborator_id),
+        name: collaborator_text
+    });
+    
+    renderCollaborators();
+    select.value = '';
+};
+
+
+const renderCollaborators = () => {
+    const container = document.getElementById('collaborators-list');
+    container.innerHTML = '';
+    
+    selectedCollaborators.forEach(collaborator => {
+        const chip = document.createElement('div');
+        chip.className = 'collaborator-chip';
+        chip.innerHTML = `
+            ${collaborator.name}
+            <button type="button" class="btn-remove" data-id="${collaborator.id}">×</button>
+        `;
+        
+        chip.querySelector('.btn-remove').addEventListener('click', function(e) {
+            e.preventDefault();
+            selectedCollaborators = selectedCollaborators.filter(c => c.id !== collaborator.id);
+            renderCollaborators();
+        });
+        
+        container.appendChild(chip);
+    });
+};
+
+
 const fetchAssignments = async () => {
     try {
-        const response = await fetch('api/assignments.php');
+        const response = await fetch('api/assignments.php?action=get_all');
         if (!response.ok) {
             throw new Error('Failed to fetch assignments');
         }
@@ -57,10 +134,12 @@ const displayAssignments = () => {
             <div class="item-header">
                 <h3>${assignment.title}</h3>
                 <span class="course-badge">${assignment.course_code}</span>
+                ${assignment.is_group_assignment ? '<span class="badge badge-group">Group</span>' : ''}
             </div>
             <div class="item-body">
                 <p class="course-name">${assignment.course_name}</p>
                 ${assignment.description ? `<p class="description">${assignment.description}</p>` : ''}
+                <div id="collaborators-${assignment.id}" class="assignment-collaborators"></div>
                 <div class="item-details">
                     <span class="due-date"><i class="fa-regular fa-calendar"></i> ${new Date(assignment.due_date).toLocaleDateString()}</span>
                     ${assignment.due_time ? `<span class="due-time"><i class="fa-regular fa-clock"></i> ${assignment.due_time}</span>` : ''}
@@ -74,45 +153,43 @@ const displayAssignments = () => {
             </div>
         </div>
     `).join('');
+    
+    
+    allAssignments.forEach(assignment => {
+        if (assignment.is_group_assignment && assignment.group_id) {
+            fetchCollaborators(assignment.id, assignment.group_id);
+        }
+    });
 };
 
 
-const fetchReminders = async () => {
+const fetchCollaborators = async (assignmentId, groupId) => {
     try {
-        const response = await fetch('api/reminders.php');
+        const response = await fetch(`api/assignments.php?action=get_collaborators&group_id=${groupId}`);
         if (!response.ok) {
-            throw new Error('Failed to fetch reminders');
+            throw new Error('Failed to fetch collaborators');
         }
-        allReminders = await response.json();
-        displayReminders();
+        const collaborators = await response.json();
+        displayCollaborators(assignmentId, collaborators);
     } catch (error) {
-        console.error('Error fetching reminders:', error);
+        console.error('Error fetching collaborators:', error);
     }
 };
 
 
-const displayReminders = () => {
-    const container = document.getElementById('reminders-list');
+const displayCollaborators = (assignmentId, collaborators) => {
+    const container = document.getElementById(`collaborators-${assignmentId}`);
     
-    if (allReminders.length === 0) {
-        container.innerHTML = '<p class="no-items">no reminders</p>';
+    if (collaborators.length === 0) {
         return;
     }
-
-    container.innerHTML = allReminders.map(reminder => `
-        <div class="item reminder-item">
-            <div class="item-color-bar" style="background-color: ${reminder.color || '#3498db'}"></div>
-            <div class="item-body">
-                <h3>${reminder.title}</h3>
-                <div class="item-details">
-                    <span class="reminder-date"><i class="fa-regular fa-calendar"></i> ${new Date(reminder.date).toLocaleDateString()}</span>
-                </div>
-            </div>
-            <div class="item-actions">
-                <button onclick="deleteReminder(${reminder.id})" class="btn-delete">Delete</button>
-            </div>
-        </div>
-    `).join('');
+    
+    let html = '<strong>Collaborators:</strong> ';
+    html += collaborators.map(collab => 
+        `<span class="collaborator-tag">${collab.name} (${collab.role})</span>`
+    ).join(', ');
+    
+    container.innerHTML = html;
 };
 
 
@@ -130,6 +207,14 @@ if (assignmentForm) {
         formData.append('due_time', document.getElementById('assignment-due-time').value);
         formData.append('priority', document.getElementById('assignment-priority').value);
         formData.append('weight_percentage', document.getElementById('assignment-weight').value);
+        
+        
+        if (selectedCollaborators.length > 0) {
+            formData.append('is_group_assignment', '1');
+            selectedCollaborators.forEach((collab, index) => {
+                formData.append(`collaborators[${index}]`, collab.id);
+            });
+        }
 
         try {
             const response = await fetch('api/assignments.php', {
@@ -144,6 +229,8 @@ if (assignmentForm) {
             } else {
                 alert('Assignment added successfully!');
                 document.getElementById('add-assignment-form').reset();
+                selectedCollaborators = [];
+                renderCollaborators();
                 fetchAssignments();
             }
         } catch (error) {
@@ -259,6 +346,44 @@ const deleteReminder = async (reminderId) => {
     }
 };
 
+const fetchReminders = async () => {
+    try {
+        const response = await fetch('api/reminders.php');
+        if (!response.ok) {
+            throw new Error('Failed to fetch reminders');
+        }
+        allReminders = await response.json();
+        displayReminders();
+    } catch (error) {
+        console.error('Error fetching reminders:', error);
+    }
+};
+
+
+const displayReminders = () => {
+    const container = document.getElementById('reminders-list');
+    
+    if (allReminders.length === 0) {
+        container.innerHTML = '<p class="no-items">no reminders</p>';
+        return;
+    }
+
+    container.innerHTML = allReminders.map(reminder => `
+        <div class="item reminder-item">
+            <div class="item-color-bar" style="background-color: ${reminder.color || '#3498db'}"></div>
+            <div class="item-body">
+                <h3>${reminder.title}</h3>
+                <div class="item-details">
+                    <span class="reminder-date"><i class="fa-regular fa-calendar"></i> ${new Date(reminder.date).toLocaleDateString()}</span>
+                </div>
+            </div>
+            <div class="item-actions">
+                <button onclick="deleteReminder(${reminder.id})" class="btn-delete">Delete</button>
+            </div>
+        </div>
+    `).join('');
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Tasks page loaded, initializing...');
     console.log('Form elements:', {
@@ -268,7 +393,17 @@ document.addEventListener('DOMContentLoaded', () => {
         remindersList: !!document.getElementById('reminders-list')
     });
     
+
+    const btnAddCollab = document.getElementById('btn-add-collaborator');
+    if (btnAddCollab) {
+        btnAddCollab.addEventListener('click', (e) => {
+            e.preventDefault();
+            addCollaborator();
+        });
+    }
+    
     fetchCourses();
+    fetchFriends();
     fetchAssignments();
     fetchReminders();
 });

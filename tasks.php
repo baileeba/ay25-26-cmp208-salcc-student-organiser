@@ -15,7 +15,7 @@
         if($idle_time > $timeout_duration) {
             session_unset();
             session_destroy();
-            header("Location: tasks.php");
+            header("Location: index.php");
             exit;
         }
     }
@@ -81,8 +81,13 @@
                                 <label for="assignment-weight">Weight (%):</label>
                                 <input type="number" id="assignment-weight" min="0" max="100">
                             </div>
-                            <div class = "form-group">
-                                <label for="assignment-group">Add Collaborator:</label>
+                            <div class="form-group">
+                                <label for="assignment-collaborator">Add Group Members:</label>
+                                <div class="collaborator-section">
+                                    <select id="assignment-collaborator"></select>
+                                    <button type="button" id="btn-add-collaborator" class="btn-secondary">Add</button>
+                                </div>
+                                <div id="collaborators-list" class="collaborators-list"></div>
                             </div>
                         </div>
                         <button type="submit" class="btn-primary">Add Assignment</button>
