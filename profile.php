@@ -79,6 +79,19 @@
             </div>
         </div>
 
+        <div id="emailNotifModal">
+            <div id="emailNotifModalContent">
+                <div id="emailNotifModalHeader">
+                    <span id="closeEmailNotifModal">&times;</span>
+                </div>
+                <div id="emailNotifModalBody">
+                    <h2>Email Notifications Enabled!</h2>
+                    <p>You will now receive email reminders for your upcoming assignments, events, and classes.</p>
+                    <button id="closeEmailNotifBtn">Got it</button>
+                </div>
+            </div>
+        </div>
+
         <script src = "js/navbar.js" defer></script>
         <script src = "js/profile.js" defer></script>
     </body>

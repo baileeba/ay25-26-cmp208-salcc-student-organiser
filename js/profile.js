@@ -65,7 +65,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     xhr.send('subject=' + encodeURIComponent(subject) + '&message=' + encodeURIComponent(message));
 });
     
-// Email Notifications Toggle
+
 let emailNotifsEnabled = false;
 
 document.getElementById('emailNotifsBtn').addEventListener('click', function() {
@@ -73,43 +73,31 @@ document.getElementById('emailNotifsBtn').addEventListener('click', function() {
     const isEnabled = btn.textContent.includes('request email notifs');
     
     if (isEnabled) {
-        // Enable notifications and send email
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', './api/email_notifs.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        // Update button text and state
-                        btn.textContent = 'request no email notifs';
-                        emailNotifsEnabled = true;
-                        
-                        // Show popup confirmation
-                        alert('✓ Email notifications enabled!\n\n' + response.message);
-                    } else {
-                        alert('Error: ' + response.message);
-                    }
-                } catch(e) {
-                    alert('Error: Could not parse response');
-                }
-            } else {
-                alert('Error: Failed to process request');
-            }
-        };
-        
-        xhr.onerror = function() {
-            alert('Error: Failed to send email notification request');
-        };
-        
-        xhr.send('action=request_notification');
+        // Show modal confirmation (placeholder - no actual email sending)
+        btn.textContent = 'request no email notifs';
+        emailNotifsEnabled = true;
+        document.getElementById('emailNotifModal').style.display = 'block';
     } else {
         // Disable notifications
         btn.textContent = 'request email notifs';
         emailNotifsEnabled = false;
-        alert('✓ Email notifications disabled');
+        alert('Email notifications disabled');
+    }
+});
+
+
+document.getElementById('closeEmailNotifModal').addEventListener('click', function() {
+    document.getElementById('emailNotifModal').style.display = 'none';
+});
+
+document.getElementById('closeEmailNotifBtn').addEventListener('click', function() {
+    document.getElementById('emailNotifModal').style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    const emailModal = document.getElementById('emailNotifModal');
+    if (event.target === emailModal) {
+        emailModal.style.display = 'none';
     }
 });
 

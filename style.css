@@ -868,6 +868,79 @@ body {
     background-color: #9fd088;
 }
 
+/* EMAIL NOTIFICATION MODAL */
+#emailNotifModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#emailNotifModalContent {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 30px;
+    border: 3px solid #b5eda8;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#emailNotifModalHeader {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+#closeEmailNotifModal {
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #223340;
+}
+
+#closeEmailNotifModal:hover {
+    color: #666;
+}
+
+#emailNotifModalBody {
+    text-align: center;
+}
+
+#emailNotifModalBody h2 {
+    color: #223340;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+#emailNotifModalBody p {
+    color: #555;
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+#closeEmailNotifBtn {
+    padding: 10px 30px;
+    border: 2px solid #b5eda8;
+    border-radius: 5px;
+    background-color: #b5eda8;
+    color: #223340;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#closeEmailNotifBtn:hover {
+    background-color: #9fd088;
+}
+
 /* TASKS PAGE!! =(^._.^)= */
 .tasks {
     display: grid;
