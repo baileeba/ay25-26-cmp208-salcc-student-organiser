@@ -24,6 +24,34 @@ document.getElementById('contactBtn').addEventListener('click', function() {
     document.getElementById('contactModal').style.display = 'block';
 });
 
+// Form submission handler
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+    const subject = document.getElementById('contactSubject').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    const errorDiv = document.getElementById('contactValidationError');
+
+    if (!subject || !email || !message) {
+        event.preventDefault();
+        errorDiv.style.display = 'block';
+        return false;
+    } else {
+        errorDiv.style.display = 'none';
+    }
+});
+
+// Auto-open contact modal if there's an error parameter
+window.addEventListener('load', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has('error')) {
+        document.getElementById('contactModal').style.display = 'block';
+    }
+    
+    // Clear form on page load
+    document.getElementById('contactForm').reset();
+    document.getElementById('contactValidationError').style.display = 'none';
+});
+
 document.getElementById('closeContactModal').addEventListener('click', function() {
     document.getElementById('contactModal').style.display = 'none';
 });
@@ -37,32 +65,6 @@ window.addEventListener('click', function(event) {
     if (event.target === modal) {
         modal.style.display = 'none';
     }
-});
-
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const subject = document.getElementById('contactSubject').value;
-    const message = document.getElementById('contactMessage').value;
-    
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', './api/contact.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            if (response.success) {
-                alert(response.message);
-                document.getElementById('contactForm').reset();
-                document.getElementById('contactModal').style.display = 'none';
-            } else {
-                alert('Error: ' + response.message);
-            }
-        }
-    };
-    
-    xhr.send('subject=' + encodeURIComponent(subject) + '&message=' + encodeURIComponent(message));
 });
     
 

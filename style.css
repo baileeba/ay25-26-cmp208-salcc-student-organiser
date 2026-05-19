@@ -768,9 +768,9 @@ body {
     color: #223340;
 }
 
-#contactBtn {
+.contact-us {
     position: absolute;
-    bottom: 20%;
+    bottom: 25%;
     right: 9%;
     background-image: url("assets/LOGIN_STICKY.png");
     background-repeat: no-repeat;
@@ -779,10 +779,14 @@ body {
     width: 20%;
     border: none;
     background-color: transparent;
+}
+
+#contactBtn {
     font-family: "Sour Gummy", sans-serif;
     font-size: 20px;
     text-shadow: 2px 2px 2px rgba(34,51,64,0.43);
     display: flex;
+    margin-top: 50%;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -811,9 +815,8 @@ body {
 }
 
 #contactModalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
+    text-align: center;
     margin-bottom: 20px;
 }
 
@@ -823,6 +826,9 @@ body {
 }
 
 #closeContactModal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -866,6 +872,21 @@ body {
 
 #contactForm button:hover {
     background-color: #9fd088;
+}
+
+#contactErrorMessage,
+#contactSuccessMessage {
+    text-align: center;
+    margin: 10px 0 20px 0;
+    font-weight: bold;
+}
+
+#contactErrorMessage {
+    color: red;
+}
+
+#contactSuccessMessage {
+    color: green;
 }
 
 /* EMAIL NOTIFICATION MODAL */

@@ -2,42 +2,50 @@
 
     session_start();
     include "../acc/connect.php";
+    require '../vendor/autoload.php';
 
-    if(!isset($_SESSION["user_id"])) {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-        exit();
-    }
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
 
-    $user_id = $_SESSION["user_id"];
-    $subject = isset($_POST['subject']) ? trim($_POST['subject']) : '';
-    $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+    if(isset($_POST['submit'])) {
+        $subject = $_POST['subject'];
+        $email = $_POST['email'];
+        $message = $_POST['message'];
 
-    if (empty($subject) || empty($message)) {
-        echo json_encode(['success' => false, 'message' => 'Subject and message are required']);
-        exit();
-    }
+        if(empty($subject) || empty($email) || empty($message)) {
+            header("Location: ../profile.php?error=emptyfields");
+        } else {
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'ayarmarks@gmail.com';
+                $mail->Password = 'emgk fywu kyag thor'; 
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+                
+                
+                $mail->setFrom('ayarmarks@gmail.com', 'Student Organizer');
+                $mail->addAddress('ayarmarks@gmail.com');
+                $mail->addReplyTo($email, 'User');
+                
+            
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body = "<p><strong>From:</strong> {$email}</p><p><strong>Message:</strong></p><p>{$message}</p>";
+                $mail->AltBody = "From: {$email}\n\nMessage:\n{$message}";
 
-    $user_query = "SELECT email FROM users WHERE user_id = ?";
-    $stmt = $conn->prepare($user_query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user_data = $result->fetch_assoc();
-    $user_email = $user_data['email'];
-
-
-    $admin_email = 'ayarmarks@gmail.com';
-    $email_subject = 'Contact Form Submission: ' . $subject;
-    $email_body = "User Email: " . $user_email . "\n\n";
-    $email_body .= "Subject: " . $subject . "\n\n";
-    $email_body .= "Message:\n" . $message;
-    $headers = "From: " . $user_email;
-
-    if (mail($admin_email, $email_subject, $email_body, $headers)) {
-        echo json_encode(['success' => true, 'message' => 'Your message has been sent successfully']);
+                if($mail->send()) {
+                    header("Location: ../profile.php?success=messageSent");
+                } else {
+                    header("Location: ../profile.php?error=emailFailed&details=" . urlencode($mail->ErrorInfo));
+                }
+            } catch (Exception $e) {
+                header("Location: ../profile.php?error=emailFailed&details=" . urlencode($e->getMessage()));
+            }
+        }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to send message. Please try again later.']);
+        header("Location: ../profile.php");
     }
-
 ?>

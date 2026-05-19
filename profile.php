@@ -50,7 +50,9 @@
                 <p id = 'editCategoriesBtn'>edit categories</p>
                 <p id = "importBtn">import SONIS schedule</p>
                 <p id = "emailNotifsBtn">request email notifs</p>
-                <p id = 'contactBtn'>contact us</p>
+                <div class = "contact-us">
+                    <p id = 'contactBtn'>contact us</p>
+                </div>
             </div>
 
             <div class = 'box2'>
@@ -66,14 +68,34 @@
                     <h2>contact us</h2>
                     <span id="closeContactModal">&times;</span>
                 </div>
-                <form id="contactForm">
+                <div id="contactValidationError" style="display: none;">
+                    <p id="contactErrorMessage">All fields are required.</p>
+                </div>
+                <?php
+                    if(isset($_GET['error'])) {
+                        if($_GET['error'] === 'emptyfields') {
+                            echo '<p id="contactErrorMessage">All fields are required.</p>';
+                        } elseif($_GET['error'] === 'emailFailed') {
+                            $details = isset($_GET['details']) ? htmlspecialchars($_GET['details']) : 'Unknown error';
+                            echo '<p id="contactErrorMessage">Failed to send email. Error: ' . $details . '</p>';
+                        }
+                    }
+
+                    if(isset($_GET['success'])) {
+                        echo '<p id="contactSuccessMessage">Your message has been sent!</p>';
+                    }
+                    ?>
+                <form id="contactForm" action = "./api/contact.php" method="POST">
                     <label for="contactSubject">Subject:</label>
-                    <input type="text" id="contactSubject" name="subject" required>
+                    <input type="text" id="contactSubject" name="subject" value="<?php echo isset($_POST['subject']) ? htmlspecialchars($_POST['subject']) : ''; ?>">
+
+                    <label for="contactEmail">Your Email:</label>
+                    <input type="email" id="contactEmail" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                     
                     <label for="contactMessage">Message:</label>
-                    <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                    <textarea id="contactMessage" name="message" rows="5"><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
                     
-                    <button type="submit">Send</button>
+                    <button type="submit" name = "submit">Send</button>
                     <button type="button" id="cancelContact">Cancel</button>
                 </form>
             </div>
