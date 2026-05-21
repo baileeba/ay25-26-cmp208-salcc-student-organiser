@@ -139,7 +139,7 @@ function sendEmail($to_email, $to_name, $text) {
         $mail->Password = SMTP_PASS;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = SMTP_PORT;
-        $mail->SMTPDebug = 0; // Set to 2 for debugging
+        $mail->SMTPDebug = 2; // Set to 2 for debugging
         
         $mail->setFrom(SENDER_EMAIL, SENDER_NAME);
         $mail->addAddress($to_email, $to_name);

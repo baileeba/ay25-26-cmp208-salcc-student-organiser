@@ -1023,10 +1023,8 @@ p[id*="Btn"]:hover,
  
 /* the filesheet background div already exists so enhance it */
 .goal-display {
-    background-image: url("../assets/GOALS_FILESHEET.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 420px;
+    background-color: #ffffff;
+    width: 550px;
     min-height: 460px;
     border: 3px solid transparent;
     border-radius: 15px;
@@ -1088,6 +1086,102 @@ p[id*="Btn"]:hover,
     font-style: italic;
     font-size: 14px;
     margin-top: 10px;
+}
+
+/* goal-item styling (created by goals-page.js) */
+.goal-item {
+    background-color: #ffffff;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 2px 2px 0px #22334020;
+    transition: box-shadow 0.2s;
+}
+
+.goal-item:hover {
+    box-shadow: 3px 3px 0px #22334040;
+}
+
+.goal-item h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #223340;
+    word-wrap: break-word;
+}
+
+.goal-item .goal-description {
+    margin: 0;
+    font-size: 13px;
+    color: #555555;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.goal-item .goal-meta {
+    margin: 0;
+    font-size: 12px;
+    color: #666666;
+    line-height: 1.6;
+}
+
+.goal-item .goal-meta strong {
+    color: #223340;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.status-active {
+    background-color: #80b973;
+    color: #ffffff;
+}
+
+.status-badge.status-completed {
+    background-color: #4caf50;
+    color: #ffffff;
+}
+
+.status-badge.status-abandoned {
+    background-color: #ff9800;
+    color: #ffffff;
+}
+
+/* Improve goals-container for better handling of multiple items */
+.goals-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.goals-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.goals-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.goals-container::-webkit-scrollbar-thumb {
+    background: #22334080;
+    border-radius: 10px;
+}
+
+.goals-container::-webkit-scrollbar-thumb:hover {
+    background: #223340;
 }
  
 /* forms panel */

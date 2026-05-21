@@ -1,1 +1,1 @@
-# Please run the sql file before using the site.
+# Please run the sql file in phpMyAdmin & the bat file as admin in control panel before using the site.
