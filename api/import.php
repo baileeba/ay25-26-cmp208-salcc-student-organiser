@@ -172,7 +172,7 @@ function parseScheduleFromPDF($text) {
     $schedules = [];
     $debug = [];
     
-    // Clean up the text
+
     $text = preg_replace('/\r/', '', $text);
     $text = preg_replace('/\xe2\x80\x93/', '-', $text);
     $text = preg_replace('/\s+/', ' ', $text);
@@ -190,9 +190,7 @@ function parseScheduleFromPDF($text) {
         'SUN' => 'Sunday'
     ];
 
-    // Pattern: Credits Section Location Days-Times CourseName CourseCode Instructor
-    // Example: 3.00B TRB-1W-02 MON 8:10am-10:00amHuman Computer InteractionCIT208 Joseph, Shane
-    // First find all course codes [A-Z]{3}\d{3}
+
     preg_match_all('/([A-Z]{3}\d{3})/', $text, $course_codes, PREG_OFFSET_CAPTURE);
 
     $debug['course_pattern'] = '/([A-Z]{3}\d{3})/';
@@ -204,26 +202,26 @@ function parseScheduleFromPDF($text) {
         return ['schedules' => [], 'debug' => $debug];
     }
 
-    // Process each course code found
+
     for ($i = 0; $i < count($course_codes[1]); $i++) {
         $course_code = $course_codes[1][$i][0];
         $offset = $course_codes[1][$i][1];
 
-        // Get text from current course code to next course code (or end of text)
+
         $next_offset = ($i + 1 < count($course_codes[1])) ? $course_codes[1][$i + 1][1] : strlen($text);
         $course_section = substr($text, $offset, $next_offset - $offset);
 
-        // Get text before course code for metadata extraction
+
         $before_start = max(0, $offset - 500);
         $before_text = substr($text, $before_start, $offset - $before_start);
 
-        // Extract location (text before credits - usually TRB-... or SCI-...)
+
         $location = 'TBA';
         if (preg_match('/(TRB-[\w\-]+|SCI-[\w\-]+|TBA)\s/', $before_text, $loc_match)) {
             $location = trim($loc_match[1]);
         }
 
-        // Find credits in the text before course code (pattern: \d+\.\d{2})
+
         $credits = 0;
         $section = 'B';
         if (preg_match('/(\d+\.\d{2})([A-Z]?)\s+/', $before_text, $match)) {
@@ -233,26 +231,20 @@ function parseScheduleFromPDF($text) {
             }
         }
 
-        // Extract course name - look for text between time patterns and course code
         $full_before_text = substr($text, 0, $offset);
-        $course_name = 'Unknown Course';
-        
-        // Try to find the course name between the last time pattern and the course code
+        $course_name = 'Unknown Course';        
+
         if (preg_match('/(\d{1,2}:\d{2}(?:am|pm))\s*([A-Za-z\s\-–]+?)\s*' . preg_quote($course_code) . '/', $full_before_text, $match)) {
             $course_name = trim($match[2]);
-        }
-        // If not found, try simpler pattern
-        else if (preg_match('/([A-Za-z][A-Za-z\s\-–]*?)\s*' . preg_quote($course_code) . '/', $full_before_text, $match)) {
+        } else if (preg_match('/([A-Za-z][A-Za-z\s\-–]*?)\s*' . preg_quote($course_code) . '/', $full_before_text, $match)) {
             $course_name = trim($match[1]);
         }
 
-        // Extract instructor (text after course code)
         $instructor = 'TBA';
         if (preg_match('/' . preg_quote($course_code) . '\s+([A-Za-z\s,\.]+?)\s+\d{2}\/\d{2}\/\d{4}/', substr($text, $offset), $match)) {
             $instructor = trim($match[1]);
         }
 
-        // Find all day/time combinations ONLY in the section belonging to this course
         $day_pattern = '/(MON|TUE|WED|THU|FRI|SAT|SUN)\s+(\d{1,2}:\d{2}(?:am|pm))\s*-\s*(\d{1,2}:\d{2}(?:am|pm))/i';
         preg_match_all($day_pattern, $course_section, $schedule_matches, PREG_SET_ORDER);
 
@@ -272,7 +264,6 @@ function parseScheduleFromPDF($text) {
                 $start_time_str = $sched[2];
                 $end_time_str = $sched[3];
 
-                // Convert to 24-hour format
                 $start_time = date("H:i:s", strtotime($start_time_str));
                 $end_time = date("H:i:s", strtotime($end_time_str));
 
@@ -289,7 +280,7 @@ function parseScheduleFromPDF($text) {
                     'location' => $location
                 ];
 
-                // Prevent duplicates
+
                 $duplicate = false;
                 foreach ($schedules as $existing) {
                     if (

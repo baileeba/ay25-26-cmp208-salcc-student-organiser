@@ -80,7 +80,6 @@
 
                 <h1>Friends</h1>
 
-                <!-- Search Users Section -->
                 <div class="friends-section">
                     <div class="section-title">Search for Users</div>
                     <div class="search-box">
@@ -90,7 +89,6 @@
                     <div id="searchResults" class="search-results"></div>
                 </div>
 
-                <!-- Friend Requests Section -->
                 <div class="friends-section">
                     <div class="section-title">Friend Requests (<?php echo $pending_requests->num_rows; ?>)</div>
                     <div id="friendRequests">
@@ -117,7 +115,7 @@
                     </div>
                 </div>
 
-                <!-- Friends List Section -->
+                
                 <div class="friends-section">
                     <div class="section-title">Your Friends (<?php echo $friends->num_rows; ?>)</div>
                     <div id="friendsList">
@@ -203,7 +201,7 @@
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
                             alert(response.message);
-                            searchUsers(); // Refresh search results
+                            searchUsers();
                         } else {
                             alert('Error: ' + response.message);
                         }
@@ -223,7 +221,7 @@
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
                             alert(response.message);
-                            location.reload(); // Refresh the page
+                            location.reload();
                         } else {
                             alert('Error: ' + response.message);
                         }
@@ -233,7 +231,7 @@
                 xhr.send('request_id=' + requestId + '&action=' + action);
             }
 
-            // Search on Enter key
+            
             document.getElementById('searchInput').addEventListener('keypress', function(event) {
                 if (event.key === 'Enter') {
                     searchUsers();

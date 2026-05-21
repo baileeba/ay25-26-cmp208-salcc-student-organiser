@@ -7,9 +7,6 @@ require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Enable error reporting for debugging
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
 $email = "";
 $emailErr = $successMsg = $resetErr = "";
 $step = 1;

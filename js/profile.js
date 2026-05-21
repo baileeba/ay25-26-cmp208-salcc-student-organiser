@@ -39,7 +39,7 @@ window.addEventListener('click', function(event) {
     }
 });
 
-// Edit Course Modal Handlers
+
 document.getElementById('closeEditCourseModal').addEventListener('click', function() {
     document.getElementById('editCourseModal').style.display = 'none';
 });
@@ -199,7 +199,7 @@ document.getElementById('changePasswordBtn').addEventListener('click', function(
     document.getElementById('changePasswordForm').reset();
 });
 
-// Change Password Modal Handlers
+
 document.getElementById('closeChangePasswordModal').addEventListener('click', function() {
     document.getElementById('changePasswordModal').style.display = 'none';
 });
@@ -225,7 +225,7 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
     const errorMsg = document.getElementById('changePasswordErrorMessage');
     const successDiv = document.getElementById('changePasswordSuccessMessage');
     
-    // Validation
+
     if (!currentPassword || !newPassword || !confirmPassword) {
         errorMsg.textContent = 'All fields are required.';
         errorDiv.style.display = 'block';
@@ -282,7 +282,7 @@ document.getElementById('contactBtn').addEventListener('click', function() {
     document.getElementById('contactModal').style.display = 'block';
 });
 
-// Form submission handler
+
 document.getElementById('contactForm').addEventListener('submit', function(event) {
     const subject = document.getElementById('contactSubject').value.trim();
     const email = document.getElementById('contactEmail').value.trim();
@@ -298,14 +298,14 @@ document.getElementById('contactForm').addEventListener('submit', function(event
     }
 });
 
-// Auto-open contact modal if there's an error parameter
+
 window.addEventListener('load', function() {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.has('error')) {
         document.getElementById('contactModal').style.display = 'block';
     }
     
-    // Clear form on page load
+
     document.getElementById('contactForm').reset();
     document.getElementById('contactValidationError').style.display = 'none';
 });
@@ -328,9 +328,8 @@ window.addEventListener('click', function(event) {
 
 let emailNotifsEnabled = false;
 
-// Load email notification status on page load
+
 window.addEventListener('load', function() {
-    // Ensure email notification modals are hidden on page load
     document.getElementById('emailNotifModal').style.display = 'none';
     document.getElementById('emailUnsubscribeModal').style.display = 'none';
     
@@ -344,7 +343,6 @@ window.addEventListener('load', function() {
         })
         .catch(error => {
             console.error('Error loading email notification status:', error);
-            // Default to false on error
             emailNotifsEnabled = false;
             updateEmailNotifButton();
         });
@@ -361,15 +359,13 @@ function updateEmailNotifButton() {
 
 document.getElementById('emailNotifsBtn').addEventListener('click', function() {
     if (emailNotifsEnabled) {
-        // Show unsubscribe confirmation modal
         document.getElementById('emailUnsubscribeModal').style.display = 'block';
     } else {
-        // Show subscribe modal
         document.getElementById('emailNotifModal').style.display = 'block';
     }
 });
 
-// Subscribe modal handlers
+
 document.getElementById('closeEmailNotifModal').addEventListener('click', function() {
     document.getElementById('emailNotifModal').style.display = 'none';
 });
@@ -379,7 +375,6 @@ document.getElementById('cancelEmailNotif').addEventListener('click', function()
 });
 
 document.getElementById('confirmEmailNotif').addEventListener('click', function() {
-    // Save preference to server
     const formData = new FormData();
     formData.append('action', 'enable');
     
@@ -419,7 +414,7 @@ window.addEventListener('click', function(event) {
     }
 });
 
-// Unsubscribe modal handlers
+
 document.getElementById('closeEmailUnsubscribeModal').addEventListener('click', function() {
     document.getElementById('emailUnsubscribeModal').style.display = 'none';
 });
@@ -429,7 +424,6 @@ document.getElementById('cancelUnsubscribe').addEventListener('click', function(
 });
 
 document.getElementById('confirmUnsubscribe').addEventListener('click', function() {
-    // Save preference to server
     const formData = new FormData();
     formData.append('action', 'disable');
     
@@ -473,7 +467,7 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
     window.location.href = './api/logout.php';
 });
 
-// Category Management Functions
+
 function loadCategories() {
     const categoriesList = document.getElementById('categoriesList');
     categoriesList.innerHTML = '<p style="color: #999; font-style: italic;">Loading courses...</p>';
@@ -525,7 +519,6 @@ function displayCategories(categories) {
         categoryInfo.appendChild(categoryName);
         if (metaText) categoryInfo.appendChild(categoryMeta);
         
-        // Make the course info clickable to edit
         categoryInfo.onclick = function(e) {
             e.stopPropagation();
             editCourse(category.id);

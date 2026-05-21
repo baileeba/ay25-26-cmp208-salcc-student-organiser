@@ -12,7 +12,6 @@ $user_id = $_SESSION["user_id"];
 $action = isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '');
 
 if ($action === 'get') {
-    // Fetch all courses for the user (treating them as categories)
     $query = "SELECT course_id as id, course_name as name, course_code, instructor FROM courses WHERE user_id = ? ORDER BY course_name ASC";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $user_id);
@@ -38,7 +37,6 @@ if ($action === 'fetch' && $_SERVER['REQUEST_METHOD'] === 'GET') {
         exit();
     }
     
-    // Verify the course belongs to the user
     $course_query = "SELECT course_id, course_name, course_code, instructor FROM courses WHERE course_id = ? AND user_id = ?";
     $course_stmt = $conn->prepare($course_query);
     $course_stmt->bind_param("ii", $course_id, $user_id);
@@ -54,7 +52,6 @@ if ($action === 'fetch' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $course = $course_result->fetch_assoc();
     $course_stmt->close();
     
-    // Fetch ALL class schedules for this course
     $schedule_query = "SELECT schedule_id, day_of_week, start_time, end_time, location FROM class_schedule WHERE course_id = ? ORDER BY day_of_week ASC, start_time ASC";
     $schedule_stmt = $conn->prepare($schedule_query);
     $schedule_stmt->bind_param("i", $course_id);
@@ -92,7 +89,6 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     
-    // Check if course already exists for this user
     $check_query = "SELECT course_id FROM courses WHERE user_id = ? AND LOWER(course_name) = LOWER(?)";
     $check_stmt = $conn->prepare($check_query);
     $check_stmt->bind_param("is", $user_id, $name);
@@ -106,7 +102,6 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $check_stmt->close();
     
-    // Insert new course
     $insert_query = "INSERT INTO courses (user_id, course_name, course_code, instructor) VALUES (?, ?, ?, ?)";
     $insert_stmt = $conn->prepare($insert_query);
     $insert_stmt->bind_param("isss", $user_id, $name, $code, $instructor);
@@ -120,14 +115,12 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_course_id = $insert_stmt->insert_id;
     $insert_stmt->close();
     
-    // Decode schedules from JSON and insert them
     $schedules = json_decode($schedules_json, true);
     
     if (!is_array($schedules)) {
         $schedules = [];
     }
     
-    // Insert schedules for the new course
     if (!empty($schedules)) {
         $valid_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $schedule_insert = "INSERT INTO class_schedule (course_id, day_of_week, start_time, end_time, location) VALUES (?, ?, ?, ?, ?)";
@@ -139,19 +132,16 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $end = isset($schedule['end']) ? trim($schedule['end']) : '';
             $location = isset($schedule['location']) ? trim($schedule['location']) : '';
             
-            // Skip empty slots
             if (empty($day) && empty($start) && empty($end)) {
                 continue;
             }
             
-            // Validate day
             if (!in_array($day, $valid_days)) {
                 $schedule_stmt->close();
                 echo json_encode(['success' => false, 'error' => 'Invalid day of week: ' . $day]);
                 exit();
             }
-            
-            // Validate times
+
             if (empty($start) || empty($end)) {
                 $schedule_stmt->close();
                 echo json_encode(['success' => false, 'error' => 'Start and end times are required for each class']);
@@ -182,7 +172,6 @@ if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     
-    // Verify the course belongs to the user
     $verify_query = "SELECT course_id FROM courses WHERE course_id = ? AND user_id = ?";
     $verify_stmt = $conn->prepare($verify_query);
     $verify_stmt->bind_param("ii", $course_id, $user_id);
@@ -196,7 +185,7 @@ if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $verify_stmt->close();
     
-    // Delete the course
+
     $delete_query = "DELETE FROM courses WHERE course_id = ? AND user_id = ?";
     $delete_stmt = $conn->prepare($delete_query);
     $delete_stmt->bind_param("ii", $course_id, $user_id);
@@ -223,7 +212,7 @@ if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
     
-    // Verify the course belongs to the user
+
     $verify_query = "SELECT course_id FROM courses WHERE course_id = ? AND user_id = ?";
     $verify_stmt = $conn->prepare($verify_query);
     $verify_stmt->bind_param("ii", $course_id, $user_id);
@@ -237,7 +226,7 @@ if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $verify_stmt->close();
     
-    // Update the course
+
     $update_query = "UPDATE courses SET course_name = ?, course_code = ?, instructor = ? WHERE course_id = ? AND user_id = ?";
     $update_stmt = $conn->prepare($update_query);
     $update_stmt->bind_param("sssii", $course_name, $course_code, $instructor, $course_id, $user_id);
@@ -250,14 +239,14 @@ if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $update_stmt->close();
     
-    // Decode schedules from JSON
+
     $schedules = json_decode($schedules_json, true);
     
     if (!is_array($schedules)) {
         $schedules = [];
     }
     
-    // Delete all existing schedules for this course
+
     $delete_schedules = "DELETE FROM class_schedule WHERE course_id = ?";
     $delete_stmt = $conn->prepare($delete_schedules);
     $delete_stmt->bind_param("i", $course_id);
@@ -270,7 +259,7 @@ if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $delete_stmt->close();
     
-    // Insert new schedules
+
     if (!empty($schedules)) {
         $valid_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $schedule_insert = "INSERT INTO class_schedule (course_id, day_of_week, start_time, end_time, location) VALUES (?, ?, ?, ?, ?)";
@@ -282,14 +271,12 @@ if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $end = isset($schedule['end']) ? trim($schedule['end']) : '';
             $location = isset($schedule['location']) ? trim($schedule['location']) : '';
             
-            // Validate day
             if (!in_array($day, $valid_days)) {
                 $schedule_stmt->close();
                 echo json_encode(['success' => false, 'error' => 'Invalid day of week: ' . $day]);
                 exit();
             }
             
-            // Validate times
             if (empty($start) || empty($end)) {
                 $schedule_stmt->close();
                 echo json_encode(['success' => false, 'error' => 'Start and end times are required for each class']);

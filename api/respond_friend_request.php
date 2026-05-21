@@ -49,7 +49,6 @@
         $stmt->bind_param("ii", $user_id, $sender_id);
 
         if ($stmt->execute()) {
-            // Delete the friend request after accepting
             $delete_query = "DELETE FROM friend_requests WHERE request_id = ?";
             $delete_stmt = $conn->prepare($delete_query);
             $delete_stmt->bind_param("i", $request_id);

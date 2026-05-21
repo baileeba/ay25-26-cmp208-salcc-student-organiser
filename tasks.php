@@ -128,7 +128,7 @@
                     </form>
                 </div>
             </div>
-            <!-- collaborator popup -->
+
         <div class="collaborator-popup" id="collaboratorPopup">
             <div class="collaborator-popup-content">
                 <button class="close-modal" id="closeCollaboratorPopup">&times;</button>
@@ -138,7 +138,6 @@
             </div>
         </div>
 
-        <!-- delete confirmation modal -->
         <div class="delete-confirmation-modal" id="deleteConfirmationModal">
             <div class="delete-confirmation-content">
                 <h3>Confirm Delete</h3>

@@ -12,7 +12,7 @@
 
     $user_id = $_SESSION["user_id"];
 
-    // Handle get_courses action
+    
     if (isset($_GET['action']) && $_GET['action'] === 'get_courses') {
         $query = "SELECT course_id, course_code, course_name FROM courses WHERE user_id = ? ORDER BY course_code ASC";
         $stmt = $conn->prepare($query);

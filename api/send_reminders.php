@@ -1,9 +1,4 @@
 <?php
-/**
- * Simple Email Reminder System
- * Sends reminders for tasks, goals, and classes due in next 24 hours
- */
-
 include "../acc/connect.php";
 include "../config/email_config.php";
 require '../vendor/autoload.php';
@@ -13,7 +8,6 @@ use PHPMailer\PHPMailer\Exception;
 
 header('Content-Type: application/json');
 
-// Get all users with email notifications enabled
 $query = "SELECT user_id, email, name FROM users WHERE email_notifications_enabled = 1";
 $result = $conn->query($query);
 
@@ -25,7 +19,6 @@ while ($user = $result->fetch_assoc()) {
     $email = $user['email'];
     $name = $user['name'];
     
-    // Get upcoming assignments (due in next 24 hours)
     $assignments = [];
     $stmt = $conn->prepare("
         SELECT title, due_date, due_time FROM assignments 
@@ -46,7 +39,6 @@ while ($user = $result->fetch_assoc()) {
         $assignments[] = $row;
     }
     
-    // Get active goals (target date in next 24 hours)
     $goals = [];
     $stmt = $conn->prepare("
         SELECT title, target_date FROM goals 
@@ -61,7 +53,6 @@ while ($user = $result->fetch_assoc()) {
         $goals[] = $row;
     }
     
-    // Get classes for today/tomorrow
     $classes = [];
     $today = date('l');
     $tomorrow = date('l', strtotime('+1 day'));
@@ -78,7 +69,6 @@ while ($user = $result->fetch_assoc()) {
         $classes[] = $row;
     }
     
-    // If there are any reminders, send email
     if (!empty($assignments) || !empty($goals) || !empty($classes)) {
         $emailBody = buildEmail($name, $assignments, $goals, $classes);
         
@@ -139,7 +129,7 @@ function sendEmail($to_email, $to_name, $text) {
         $mail->Password = SMTP_PASS;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = SMTP_PORT;
-        $mail->SMTPDebug = 2; // Set to 2 for debugging
+        $mail->SMTPDebug = 2;
         
         $mail->setFrom(SENDER_EMAIL, SENDER_NAME);
         $mail->addAddress($to_email, $to_name);

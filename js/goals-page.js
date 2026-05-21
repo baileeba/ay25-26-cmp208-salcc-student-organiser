@@ -1,30 +1,26 @@
 document.addEventListener("DOMContentLoaded", function() {
     loadGoals();
 
-    // Create Goal Form
     document.getElementById("createGoalForm").addEventListener("submit", function(e) {
         e.preventDefault();
         createGoal();
     });
 
-    // Update Goal Form
     document.getElementById("updateGoalForm").addEventListener("submit", function(e) {
         e.preventDefault();
         updateGoal();
     });
 
-    // Delete Goal Button
     document.getElementById("deleteGoalBtn").addEventListener("click", function() {
         deleteGoal();
     });
 
-    // Populate update form when goal is selected
     document.getElementById("selectGoal").addEventListener("change", function() {
         populateUpdateForm();
     });
 });
 
-// Load all goals
+
 function loadGoals() {
     fetch("api/fetch_goal.php")
         .then(response => {
@@ -38,22 +34,20 @@ function loadGoals() {
             const noGoalsMessage = document.getElementById("noGoalsMessage");
             const selectGoal = document.getElementById("selectGoal");
 
-            // Clear containers
+
             goalsContainer.innerHTML = "";
             selectGoal.innerHTML = '<option value="">-- choose a goal! --</option>';
 
             if (Array.isArray(data) && data.length > 0) {
-                // Hide no goals message
+
                 noGoalsMessage.style.display = "none";
 
                 data.forEach(goal => {
-                    // Add to select dropdown
                     const option = document.createElement("option");
                     option.value = goal.goal_id;
                     option.textContent = goal.title;
                     selectGoal.appendChild(option);
 
-                    // Add to display
                     const goalElement = document.createElement("div");
                     goalElement.className = "goal-item";
                     goalElement.innerHTML = `
@@ -68,7 +62,6 @@ function loadGoals() {
                     goalsContainer.appendChild(goalElement);
                 });
             } else {
-                // Show no goals message
                 noGoalsMessage.style.display = "block";
             }
         })
@@ -77,7 +70,7 @@ function loadGoals() {
         });
 }
 
-// Create a new goal
+
 function createGoal() {
     const formData = new FormData(document.getElementById("createGoalForm"));
     
@@ -106,7 +99,7 @@ function createGoal() {
     });
 }
 
-// Update an existing goal
+
 function updateGoal() {
     const goalId = document.getElementById("selectGoal").value;
     
@@ -142,7 +135,7 @@ function updateGoal() {
     });
 }
 
-// Delete a goal
+
 function deleteGoal() {
     const goalId = document.getElementById("selectGoal").value;
     
@@ -183,7 +176,7 @@ function deleteGoal() {
     });
 }
 
-// Populate update form with selected goal's data
+
 function populateUpdateForm() {
     const goalId = document.getElementById("selectGoal").value;
     
@@ -192,7 +185,6 @@ function populateUpdateForm() {
         return;
     }
 
-    // Find the goal in the goals list and populate the form
     fetch("api/fetch_goal.php")
         .then(response => response.json())
         .then(data => {
@@ -208,14 +200,14 @@ function populateUpdateForm() {
         .catch(error => console.error("Error populating form:", error));
 }
 
-// Show message
+
 function showMessage(elementId, message, type) {
     const messageElement = document.getElementById(elementId);
     messageElement.className = `form-message message-${type}`;
     messageElement.textContent = message;
     messageElement.style.display = "block";
 
-    // Auto-hide success messages after 3 seconds
+
     if (type === "success") {
         setTimeout(() => {
             messageElement.style.display = "none";
@@ -223,7 +215,7 @@ function showMessage(elementId, message, type) {
     }
 }
 
-// Escape HTML to prevent XSS
+
 function escapeHtml(text) {
     if (!text) return "";
     const map = {

@@ -10,16 +10,13 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Get the start of the week - use provided Monday or calculate from today
 if (isset($_GET['monday'])) {
-    // Use the Monday date provided by the frontend
     $monday = DateTime::createFromFormat('Y-m-d', $_GET['monday']);
     if ($monday === false) {
         $monday = new DateTime();
         $monday->modify('Monday this week');
     }
 } else {
-    // Fallback to server's current week
     $monday = new DateTime();
     $monday->modify('Monday this week');
 }
@@ -30,7 +27,7 @@ $sunday->modify('Sunday this week');
 $monday_date = $monday->format('Y-m-d');
 $sunday_date = $sunday->format('Y-m-d');
 
-// Fetch reminders for the week
+
 $reminders_sql = "SELECT id, reminder_date, reminder_time, reminder_text, reminder_color, reminder_type 
                   FROM reminders 
                   WHERE user_id = ? AND reminder_date BETWEEN ? AND ?
@@ -54,7 +51,7 @@ while ($row = $reminders_result->fetch_assoc()) {
     ];
 }
 
-// Fetch classes for the week
+
 $classes_sql = "SELECT cs.schedule_id, cs.day_of_week, cs.start_time, cs.end_time, cs.location, 
                        c.course_code, c.course_name
                 FROM class_schedule cs
@@ -71,7 +68,6 @@ $classes = [];
 $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 while ($row = $classes_result->fetch_assoc()) {
-    // Find the date for this day of week in the current week
     $day_index = array_search($row["day_of_week"], $days);
     $class_date = clone $monday;
     $class_date->modify("+{$day_index} days");
@@ -89,7 +85,7 @@ while ($row = $classes_result->fetch_assoc()) {
     ];
 }
 
-// Fetch assignments for the week
+
 $assignments_sql = "SELECT a.assignment_id, a.title, a.due_date, a.due_time, 
                            a.priority, a.color, c.course_code, c.course_name
                     FROM assignments a
@@ -117,7 +113,7 @@ while ($row = $assignments_result->fetch_assoc()) {
     ];
 }
 
-// Combine and sort all events
+
 $events = array_merge($reminders, $classes, $assignments);
 usort($events, function($a, $b) {
     $date_cmp = strcmp($a['date'], $b['date']);

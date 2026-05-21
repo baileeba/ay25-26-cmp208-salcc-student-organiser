@@ -2186,36 +2186,114 @@ p[id*="Btn"]:hover,
 .btn-accept {
     background-color: #80b973;
     border: 2px solid #223340;
-    border-radius: 6px;
-    padding: 5px 12px;
+    border-radius: 8px;
+    padding: 8px 16px;
     font-family: "Sour Gummy", sans-serif;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #223340;
     cursor: pointer;
-    box-shadow: 1px 1px 0px #223340;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
 }
  
+.btn-accept:hover {
+    background-color: #6da362;
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+
 .btn-decline {
     background-color: #ffb3b3;
     border: 2px solid #223340;
-    border-radius: 6px;
-    padding: 5px 12px;
+    border-radius: 8px;
+    padding: 8px 16px;
     font-family: "Sour Gummy", sans-serif;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #223340;
     cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-decline:hover {
+    background-color: #ff8f8f;
+    transform: translate(1px, 1px);
     box-shadow: 1px 1px 0px #223340;
 }
- 
-.btn-accept:hover { background-color: #6da362; }
-.btn-decline:hover { background-color: #ff8f8f; }
  
 .btn-add-friend {
     background-color: #d5b4ff;
     border: 2px solid #223340;
-    border-radius: 6px;
-    padding: 5px 12px;
+    border-radius: 8px;
+    padding: 8px 16px;
     font-family: "Sour Gummy", sans-serif;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #223340;
     cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-add-friend:hover {
+    background-color: #c9a3ff;
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+
+.btn-request-sent {
+    background-color: #fff654;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #223340;
+    cursor: not-allowed;
+    box-shadow: 2px 2px 0px #223340;
+    opacity: 0.8;
+}
+
+.btn-cancel-request {
+    background-color: #fff654;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #223340;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-cancel-request:hover {
+    background-color: #ffed4d;
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+
+.btn-remove-friend {
+    background-color: #ff6b6b;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-remove-friend:hover {
+    background-color: #ff5252;
+    transform: translate(1px, 1px);
     box-shadow: 1px 1px 0px #223340;
 }
  

@@ -15,23 +15,20 @@ if (!isset($_SESSION["user_id"])) {
 
 $user_id = $_SESSION["user_id"];
 
-// Function to ensure the column exists
+
 function ensureEmailNotificationColumn($conn) {
     $checkColumn = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
                    WHERE TABLE_NAME = 'users' AND COLUMN_NAME = 'email_notifications_enabled'";
     $result = $conn->query($checkColumn);
     
     if ($result->num_rows === 0) {
-        // Column doesn't exist, create it
         $conn->query("ALTER TABLE users ADD COLUMN email_notifications_enabled BOOLEAN DEFAULT 0");
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'status') {
-    // Ensure column exists
     ensureEmailNotificationColumn($conn);
     
-    // Get current email notification status
     $query = "SELECT email_notifications_enabled FROM users WHERE user_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $user_id);
@@ -51,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    // Ensure column exists
     ensureEmailNotificationColumn($conn);
     
     $action = $_POST['action'];
@@ -59,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($action === 'enable' || $action === 'disable') {
         $enabled = ($action === 'enable') ? 1 : 0;
         
-        // Get user email and name before updating
         $userQuery = "SELECT email, name FROM users WHERE user_id = ?";
         $userStmt = $conn->prepare($userQuery);
         $userStmt->bind_param("i", $user_id);
@@ -72,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $stmt->bind_param("ii", $enabled, $user_id);
         
         if ($stmt->execute()) {
-            // Send email based on action
             if ($action === 'enable' && $userData) {
                 sendConfirmationEmail($userData['email'], $userData['name']);
             } elseif ($action === 'disable' && $userData) {

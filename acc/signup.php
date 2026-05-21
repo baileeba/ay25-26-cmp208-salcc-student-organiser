@@ -43,7 +43,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $stmt->bind_param("ssss", $name, $username, $email, $password);
 
         if ($stmt->execute()) {
-            // Send welcome email
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();

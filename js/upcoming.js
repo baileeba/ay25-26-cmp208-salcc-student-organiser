@@ -1,8 +1,6 @@
 const upcomingElement = document.getElementById('upcoming');
 
-// display upcoming reminders, assignments, and classes
 const displayUpcoming = () => {
-    // Use globally available data from mini-calendar.js
     const remindersData = window.remindersData || [];
     const assignmentsData = window.assignmentsData || [];
     const classesData = window.classesData || [];
@@ -12,24 +10,21 @@ const displayUpcoming = () => {
     const todayTime = today.getTime();
     const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][today.getDay()];
 
-    // keep only future/today reminders
     const upcomingReminders = remindersData.filter(reminder => {
         const reminderDate = new Date(reminder.date);
         reminderDate.setHours(0, 0, 0, 0);
         return reminderDate.getTime() >= todayTime;
     });
 
-    // keep only future/today assignments
     const upcomingAssignments = assignmentsData.filter(assignment => {
         const assignmentDate = new Date(assignment.due_date);
         assignmentDate.setHours(0, 0, 0, 0);
         return assignmentDate.getTime() >= todayTime;
     });
 
-    // get classes for today
+
     const todayClasses = classesData.filter(classItem => classItem.day === dayOfWeek);
 
-    // combine and sort by date/time
     const allItems = [
         ...upcomingReminders.map(r => ({ ...r, type: 'reminder', sortDate: new Date(r.date), sortTime: r.time || '00:00' })),
         ...upcomingAssignments.map(a => ({ ...a, type: 'assignment', sortDate: new Date(a.due_date), sortTime: a.due_date })),

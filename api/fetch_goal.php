@@ -11,7 +11,6 @@
 
     $user_id = $_SESSION["user_id"];
 
-    // Fetch all goals for the user
     $sql = "SELECT goal_id, title, description, target_date, progress_percentage, status 
             FROM goals 
             WHERE user_id = ? 

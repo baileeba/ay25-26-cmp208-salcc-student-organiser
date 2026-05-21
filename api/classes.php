@@ -10,7 +10,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch all classes for the user
 $classes_sql = "SELECT cs.schedule_id, cs.day_of_week, cs.start_time, cs.end_time, cs.location, 
                        c.course_code, c.course_name, c.course_color
                 FROM class_schedule cs

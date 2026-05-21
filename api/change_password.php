@@ -4,7 +4,6 @@ header('Content-Type: application/json');
 
 include "../acc/connect.php";
 
-// Check if user is logged in
 if(!isset($_SESSION["user_id"])) {
     http_response_code(401);
     echo json_encode(["success" => false, "error" => "User not logged in"]);
@@ -16,7 +15,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = isset($_POST['newPassword']) ? $_POST['newPassword'] : '';
     $confirmPassword = isset($_POST['confirmPassword']) ? $_POST['confirmPassword'] : '';
 
-    // Validation
     if(empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
         http_response_code(400);
         echo json_encode(["success" => false, "error" => "All fields are required"]);
@@ -35,7 +33,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Get current password from database
     $stmt = $conn->prepare("SELECT password FROM users WHERE user_id = ?");
     $stmt->bind_param("i", $_SESSION["user_id"]);
     $stmt->execute();
@@ -49,17 +46,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $row = $result->fetch_assoc();
 
-    // Verify current password
     if(!password_verify($currentPassword, $row["password"])) {
         http_response_code(401);
         echo json_encode(["success" => false, "error" => "Current password is incorrect"]);
         exit();
     }
 
-    // Hash new password
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-    // Update password in database
     $stmt = $conn->prepare("UPDATE users SET password = ? WHERE user_id = ?");
     $stmt->bind_param("si", $hashedPassword, $_SESSION["user_id"]);
 

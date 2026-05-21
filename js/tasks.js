@@ -296,34 +296,28 @@ const showDeleteConfirmation = (title, message, onConfirm) => {
     const confirmBtn = document.getElementById('confirmDeleteBtn');
     const cancelBtn = document.getElementById('cancelDeleteBtn');
     
-    // Update message
     if (messageElement) {
         messageElement.textContent = message;
     }
     
-    // Show modal
     modal.style.display = 'block';
     
-    // Handle confirm
     const handleConfirm = async () => {
         modal.style.display = 'none';
         await onConfirm();
         cleanupEventListeners();
     };
     
-    // Handle cancel
     const handleCancel = () => {
         modal.style.display = 'none';
         cleanupEventListeners();
     };
     
-    // Cleanup function
     const cleanupEventListeners = () => {
         confirmBtn.removeEventListener('click', handleConfirm);
         cancelBtn.removeEventListener('click', handleCancel);
     };
     
-    // Add event listeners
     confirmBtn.addEventListener('click', handleConfirm);
     cancelBtn.addEventListener('click', handleCancel);
 };

@@ -7,7 +7,7 @@ let editingCourseId = null;
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const dayIds = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-// get monday of the current week
+
 const getMondayOfWeek = (date) => {
     const d = new Date(date);
     const day = d.getDay();
@@ -15,12 +15,11 @@ const getMondayOfWeek = (date) => {
     return new Date(d.setDate(diff));
 };
 
-// format date for display
 const formatDate = (date) => {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
 
-// get weekly calendar data
+
 const fetchWeeklyCalendar = async (weekDate) => {
     try {
         const monday = getMondayOfWeek(weekDate);
@@ -37,7 +36,7 @@ const fetchWeeklyCalendar = async (weekDate) => {
     }
 };
 
-// Load all courses
+
 const loadCourses = async () => {
     try {
         const response = await fetch('api/manage_categories.php?action=get');
@@ -51,7 +50,7 @@ const loadCourses = async () => {
     }
 };
 
-// Display courses in the modal
+
 const displayCoursesList = () => {
     const container = document.getElementById('coursesContainer');
     if (!container) return;
@@ -75,14 +74,14 @@ const displayCoursesList = () => {
     `).join('');
 };
 
-// Show courses list
+
 const showCoursesList = () => {
     document.getElementById('coursesList').style.display = 'block';
     document.getElementById('courseForm').style.display = 'none';
     displayCoursesList();
 };
 
-// Edit course
+
 const editCourse = async (courseId) => {
     try {
         const response = await fetch(`api/manage_categories.php?action=fetch&id=${courseId}`);
@@ -101,7 +100,6 @@ const editCourse = async (courseId) => {
             document.getElementById('courseCode').value = course.course_code || '';
             document.getElementById('courseInstructor').value = course.instructor || '';
             
-            // Clear and populate time slots
             const timeSlotsContainer = document.getElementById('timeSlotsContainer');
             timeSlotsContainer.innerHTML = '';
             
@@ -110,7 +108,6 @@ const editCourse = async (courseId) => {
                     addTimeSlot(schedule, index);
                 });
             } else {
-                // Add one empty time slot for new schedules
                 addTimeSlot(null, 0);
             }
         }
@@ -120,7 +117,7 @@ const editCourse = async (courseId) => {
     }
 };
 
-// Add time slot to form (for displaying existing or new slots)
+
 const addTimeSlot = (schedule = null, index = 0) => {
     const timeSlotsContainer = document.getElementById('timeSlotsContainer');
     const slotDiv = document.createElement('div');
@@ -160,7 +157,7 @@ const addTimeSlot = (schedule = null, index = 0) => {
     timeSlotsContainer.appendChild(slotDiv);
 };
 
-// Remove time slot
+
 const removeTimeSlot = (index) => {
     const slotDiv = document.getElementById(`timeSlot-${index}`);
     if (slotDiv) {
@@ -168,7 +165,7 @@ const removeTimeSlot = (index) => {
     }
 };
 
-// Show add course form
+
 const showAddCourseForm = () => {
     editingCourseId = null;
     document.getElementById('coursesList').style.display = 'none';
@@ -176,13 +173,12 @@ const showAddCourseForm = () => {
     document.getElementById('formTitle').textContent = 'add course';
     document.getElementById('courseFormElement').reset();
     
-    // Add one empty time slot
     const timeSlotsContainer = document.getElementById('timeSlotsContainer');
     timeSlotsContainer.innerHTML = '';
     addTimeSlot(null, 0);
 };
 
-// Delete course
+
 const deleteCourse = async (courseId) => {
     if (!confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
         return;
@@ -207,7 +203,7 @@ const deleteCourse = async (courseId) => {
     }
 };
 
-// Save course (add or update)
+
 const saveCourse = async (e) => {
     e.preventDefault();
     
@@ -220,13 +216,11 @@ const saveCourse = async (e) => {
         return;
     }
     
-    // Collect all time slots (brackets need to be escaped in CSS selectors)
     const daysOfWeek = document.querySelectorAll('select[name="dayOfWeek\\[\\]"]');
     const startTimes = document.querySelectorAll('input[name="startTime\\[\\]"]');
     const endTimes = document.querySelectorAll('input[name="endTime\\[\\]"]');
     const locations = document.querySelectorAll('input[name="location\\[\\]"]');
     
-    // Validate at least one time slot is filled
     let hasValidTimeSlot = false;
     const timeSlots = [];
     
@@ -236,7 +230,6 @@ const saveCourse = async (e) => {
         const end = endTimes[i]?.value || '';
         const location = locations[i]?.value || '';
         
-        // Check if this slot has at least day and times
         if (day || start || end) {
             if (!day || !start || !end) {
                 alert('Please fill in all fields for each class time (day, start time, and end time are required)');
@@ -247,11 +240,6 @@ const saveCourse = async (e) => {
         }
     }
     
-    // Optional: Allow courses without times (can be added later)
-    // if (!hasValidTimeSlot) {
-    //     alert('Please add at least one class time');
-    //     return;
-    // }
     
     const formData = new FormData();
     formData.append('action', editingCourseId ? 'update' : 'add');
@@ -287,13 +275,13 @@ const saveCourse = async (e) => {
     }
 };
 
-// get events for a specific date
+
 const getEventsForDate = (dateString) => {
     if (!weekEvents.events) return [];
     
     let events = weekEvents.events.filter(event => event.date === dateString);
     
-    // Apply filter
+
     if (currentFilter === 'reminders') {
         events = events.filter(event => event.category === 'reminder');
     } else if (currentFilter === 'classes') {
@@ -305,7 +293,7 @@ const getEventsForDate = (dateString) => {
     return events;
 };
 
-// create event element
+
 const createEventElement = (event) => {
     if (event.category === 'reminder') {
         return `
@@ -336,20 +324,19 @@ const createEventElement = (event) => {
     }
 };
 
-// update the weekly calendar display
+
 const updateWeeklyDisplay = (weekDate) => {
     const monday = getMondayOfWeek(weekDate);
     const weekEnd = new Date(monday);
     weekEnd.setDate(weekEnd.getDate() + 6);
 
-    // update header
+
     const weekTitleElement = document.getElementById('weekTitle');
     if (weekTitleElement) {
         const titleText = `Week of ${formatDate(monday)} - ${formatDate(weekEnd)}`;
         weekTitleElement.textContent = titleText;
     }
 
-    // clear and populate each day
     dayIds.forEach((dayId, index) => {
         const dayDate = new Date(monday);
         dayDate.setDate(dayDate.getDate() + index);
@@ -359,16 +346,13 @@ const updateWeeklyDisplay = (weekDate) => {
         const eventsContainer = dayColumn.querySelector('.events-container');
         const dayHeader = dayColumn.querySelector('.day-name');
 
-        // update day header with date
         dayHeader.innerHTML = `
             ${days[index]}<br>
             <span class="day-date">${formatDate(dayDate)}</span>
         `;
-
-        // get events for this day
+        
         const dayEvents = getEventsForDate(dateString);
 
-        // populate events
         if (dayEvents.length === 0) {
             eventsContainer.innerHTML = '<p class="no-events">No events</p>';
         } else {
@@ -379,7 +363,7 @@ const updateWeeklyDisplay = (weekDate) => {
     });
 };
 
-// navigation
+
 const prevWeekBtn = document.getElementById('prevWeek');
 const nextWeekBtn = document.getElementById('nextWeek');
 
@@ -397,12 +381,11 @@ if (nextWeekBtn) {
     });
 }
 
-// Initialize calendar
 if (document.getElementById('monday')) {
     fetchWeeklyCalendar(currentWeekDate);
 }
 
-// Filter functionality
+
 const filterButtons = document.querySelectorAll('.filter-btn');
 filterButtons.forEach(btn => {
     btn.addEventListener('click', function() {
@@ -423,7 +406,7 @@ filterButtons.forEach(btn => {
     });
 });
 
-// Modal functionality
+
 const editCategoryBtn = document.getElementById('editCategoryBtn');
 const categoryModal = document.getElementById('categoryModal');
 const closeCategoryModal = document.getElementById('closeCategoryModal');
@@ -457,7 +440,6 @@ if (courseFormElement) {
     courseFormElement.addEventListener('submit', saveCourse);
 }
 
-// Add time slot button listener
 const addTimeSlotBtn = document.getElementById('addTimeSlotBtn');
 if (addTimeSlotBtn) {
     addTimeSlotBtn.addEventListener('click', (e) => {
@@ -468,7 +450,6 @@ if (addTimeSlotBtn) {
     });
 }
 
-// close if user clicks outside the modal content
 window.addEventListener('click', (e) => {
     if (e.target === categoryModal) {
         categoryModal.style.display = 'none';
