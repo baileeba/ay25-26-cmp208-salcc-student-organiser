@@ -2,6 +2,7 @@
 
     session_start();
     include "../acc/connect.php";
+    header('Content-Type: application/json');
 
     if(!isset($_SESSION["user_id"])) {
         http_response_code(401);
@@ -10,6 +11,23 @@
     }
 
     $user_id = $_SESSION["user_id"];
+
+    // Handle get_courses action
+    if (isset($_GET['action']) && $_GET['action'] === 'get_courses') {
+        $query = "SELECT course_id, course_code, course_name FROM courses WHERE user_id = ? ORDER BY course_code ASC";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        $courses = [];
+        while ($course = $result->fetch_assoc()) {
+            $courses[] = $course;
+        }
+        
+        echo json_encode($courses);
+        exit();
+    }
     $search_term = isset($_POST['search']) ? trim($_POST['search']) : '';
 
     if (strlen($search_term) < 2) {

@@ -22,7 +22,8 @@ function displayGoal(data) {
         
         goalContainer.innerHTML = '';
         
-        const targetDate = new Date(goal.target_date);
+        const [y, m, d] = goal.target_date.split('-');
+        const targetDate = new Date(y, m-1, d);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         targetDate.setHours(0, 0, 0, 0);
@@ -45,7 +46,7 @@ function displayGoal(data) {
             </div>
             <p class="goal-deadline">
                 <i class="fa-solid fa-calendar"></i>
-                Target: ${new Date(goal.target_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                Target: ${(() => { const [y, m, d] = goal.target_date.split('-'); return new Date(y, m-1, d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); })()}
                 ${daysUntil > 0 ? `<span class="days-left">(${daysUntil} days)</span>` : daysUntil === 0 ? '<span class="due-today">(Due today!)</span>' : '<span class="overdue">(Overdue)</span>'}
             </p>
             <button class="view-goals-btn" onclick="window.location.href='goals.php'">View All Goals</button>

@@ -2,6 +2,7 @@
 
     session_start();
     include "../acc/connect.php";
+    include "../config/email_config.php";
     require '../vendor/autoload.php';
 
     use PHPMailer\PHPMailer\PHPMailer;
@@ -18,16 +19,16 @@
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';
+                $mail->Host = SMTP_HOST;
                 $mail->SMTPAuth = true;
-                $mail->Username = 'ayarmarks@gmail.com';
-                $mail->Password = 'emgk fywu kyag thor'; 
+                $mail->Username = SMTP_USER;
+                $mail->Password = SMTP_PASS;
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port = 587;
+                $mail->Port = SMTP_PORT;
                 
                 
-                $mail->setFrom('ayarmarks@gmail.com', 'Student Organizer');
-                $mail->addAddress('ayarmarks@gmail.com');
+                $mail->setFrom(SENDER_EMAIL, 'Student Organizer');
+                $mail->addAddress(SENDER_EMAIL);
                 $mail->addReplyTo($email, 'User');
                 
             

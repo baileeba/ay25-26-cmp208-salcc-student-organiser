@@ -8,7 +8,10 @@ CREATE TABLE users (
   name VARCHAR(100) NOT NULL,
   username VARCHAR(50) NOT NULL UNIQUE,
   email VARCHAR(100) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL
+  password VARCHAR(255) NOT NULL,
+  reset_token VARCHAR(64),
+  reset_token_expiry DATETIME,
+  email_notifications_enabled BOOLEAN DEFAULT 0
 );
 
 
@@ -69,6 +72,7 @@ CREATE TABLE assignments (
   weight_percentage DECIMAL(5,2),
   is_group_assignment BOOLEAN DEFAULT FALSE,
   group_id INT,
+  color VARCHAR(7) DEFAULT '#3498db',
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
   FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE SET NULL

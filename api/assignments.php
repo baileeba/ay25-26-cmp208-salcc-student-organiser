@@ -87,7 +87,7 @@ if ($action === 'get_collaborators') {
 if ($method === 'GET' && (!$action || $action === 'get_all')) {
     $sql = "SELECT DISTINCT a.assignment_id AS id, a.course_id, a.title, a.description, a.due_date,
             a.due_time, a.priority, a.status, a.weight_percentage, a.group_id, a.is_group_assignment,
-            c.course_code, c.course_name
+            a.color, c.course_code, c.course_name
         FROM assignments a
         INNER JOIN courses c
         ON a.course_id = c.course_id
@@ -145,6 +145,8 @@ if ($method === 'POST' && $action === 'create') {
     $weight_percentage = $_POST['weight_percentage'] !== '' ? $_POST['weight_percentage'] : null;
 
     $is_group_assignment = isset($_POST['is_group_assignment']) ? 1 : 0;
+
+    $color = $_POST['color'] ?? '#3498db';
 
     $group_id = null;
 
@@ -218,13 +220,13 @@ if ($method === 'POST' && $action === 'create') {
 
 
     $sql = "INSERT INTO assignments (user_id, course_id, title, description, due_date,
-            due_time, priority, status, weight_percentage, is_group_assignment, group_id)
-            VALUES (?,?,?,?,?,?,?,'not_started',?,?,?)";
+            due_time, priority, status, weight_percentage, is_group_assignment, group_id, color)
+            VALUES (?,?,?,?,?,?,?,'not_started',?,?,?,?)";
 
     $stmt = $conn->prepare($sql);
 
     $stmt->bind_param(
-        "isssssiii",
+        "iisssssiiss",
         $user_id,
         $course_id,
         $title,
@@ -234,7 +236,8 @@ if ($method === 'POST' && $action === 'create') {
         $priority,
         $weight_percentage,
         $is_group_assignment,
-        $group_id
+        $group_id,
+        $color
     );
 
     if (!$stmt->execute()) {

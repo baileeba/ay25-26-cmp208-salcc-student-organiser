@@ -130,7 +130,8 @@ const displayAssignments = () => {
     }
 
     container.innerHTML = allAssignments.map(assignment => `
-        <div class="item assignment-item priority-${assignment.priority}">
+        <div class="item assignment-item priority-${assignment.priority}" style="border-left: 4px solid ${assignment.color};">
+            <button class="btn-delete-x" onclick="deleteAssignment(${assignment.id})" title="Delete assignment">×</button>
             <div class="item-header">
                 <h3>${assignment.title}</h3>
                 <span class="course-badge">${assignment.course_code}</span>
@@ -141,15 +142,12 @@ const displayAssignments = () => {
                 ${assignment.description ? `<p class="description">${assignment.description}</p>` : ''}
                 <div id="collaborators-${assignment.id}" class="assignment-collaborators"></div>
                 <div class="item-details">
-                    <span class="due-date"><i class="fa-regular fa-calendar"></i> ${new Date(assignment.due_date).toLocaleDateString()}</span>
+                    <span class="due-date"><i class="fa-regular fa-calendar"></i> ${(() => { const [y, m, d] = assignment.due_date.split('-'); return new Date(y, m-1, d).toLocaleDateString(); })()}</span>
                     ${assignment.due_time ? `<span class="due-time"><i class="fa-regular fa-clock"></i> ${assignment.due_time}</span>` : ''}
                     <span class="priority badge-${assignment.priority}">${assignment.priority}</span>
                     <span class="status">${assignment.status.replace('_', ' ')}</span>
                     ${assignment.weight_percentage ? `<span class="weight">${assignment.weight_percentage}%</span>` : ''}
                 </div>
-            </div>
-            <div class="item-actions">
-                <button onclick="deleteAssignment(${assignment.id})" class="btn-delete">Delete</button>
             </div>
         </div>
     `).join('');
@@ -207,6 +205,7 @@ if (assignmentForm) {
         formData.append('due_time', document.getElementById('assignment-due-time').value);
         formData.append('priority', document.getElementById('assignment-priority').value);
         formData.append('weight_percentage', document.getElementById('assignment-weight').value);
+        formData.append('color', document.getElementById('assignment-color').value);
         
         
         if (selectedCollaborators.length > 0) {
@@ -291,59 +290,98 @@ if (reminderForm) {
 }
 
 
-const deleteAssignment = async (assignmentId) => {
-    if (!confirm('Are you sure you want to delete this assignment?')) return;
+const showDeleteConfirmation = (title, message, onConfirm) => {
+    const modal = document.getElementById('deleteConfirmationModal');
+    const messageElement = document.getElementById('deleteConfirmationMessage');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
     
-    const formData = new FormData();
-    formData.append('action', 'delete');
-    formData.append('assignment_id', assignmentId);
-
-    try {
-        const response = await fetch('api/assignments.php', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-        
-        if (result.error) {
-            alert('Error: ' + result.error);
-        } else {
-            alert('Assignment deleted!');
-            fetchAssignments();
-        }
-    } catch (error) {
-        console.error('Error deleting assignment:', error);
-        alert('Failed to delete assignment');
+    // Update message
+    if (messageElement) {
+        messageElement.textContent = message;
     }
+    
+    // Show modal
+    modal.style.display = 'block';
+    
+    // Handle confirm
+    const handleConfirm = async () => {
+        modal.style.display = 'none';
+        await onConfirm();
+        cleanupEventListeners();
+    };
+    
+    // Handle cancel
+    const handleCancel = () => {
+        modal.style.display = 'none';
+        cleanupEventListeners();
+    };
+    
+    // Cleanup function
+    const cleanupEventListeners = () => {
+        confirmBtn.removeEventListener('click', handleConfirm);
+        cancelBtn.removeEventListener('click', handleCancel);
+    };
+    
+    // Add event listeners
+    confirmBtn.addEventListener('click', handleConfirm);
+    cancelBtn.addEventListener('click', handleCancel);
+};
+
+
+const deleteAssignment = async (assignmentId) => {
+    showDeleteConfirmation('Delete Assignment', 'Are you sure you want to delete this assignment?', async () => {
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('assignment_id', assignmentId);
+
+        try {
+            const response = await fetch('api/assignments.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            
+            if (result.error) {
+                alert('Error: ' + result.error);
+            } else {
+                alert('Assignment deleted!');
+                fetchAssignments();
+            }
+        } catch (error) {
+            console.error('Error deleting assignment:', error);
+            alert('Failed to delete assignment');
+        }
+    });
 };
 
 
 const deleteReminder = async (reminderId) => {
-    if (!confirm('Are you sure you want to delete this reminder?')) return;
-    
-    const formData = new FormData();
-    formData.append('action', 'delete');
-    formData.append('id', reminderId);
+    showDeleteConfirmation('Delete Reminder', 'Are you sure you want to delete this reminder?', async () => {
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('id', reminderId);
 
-    try {
-        const response = await fetch('api/reminders.php', {
-            method: 'POST',
-            body: formData
-        });
+        try {
+            const response = await fetch('api/reminders.php', {
+                method: 'POST',
+                body: formData
+            });
 
-        const result = await response.json();
-        
-        if (result.error) {
-            alert('Error: ' + result.error);
-        } else {
-            alert('Reminder deleted!');
-            fetchReminders();
+            const result = await response.json();
+            
+            if (result.error) {
+                alert('Error: ' + result.error);
+            } else {
+                alert('Reminder deleted!');
+                fetchReminders();
+            }
+        } catch (error) {
+            console.error('Error deleting reminder:', error);
+            alert('Failed to delete reminder');
         }
-    } catch (error) {
-        console.error('Error deleting reminder:', error);
-        alert('Failed to delete reminder');
-    }
+    });
 };
 
 const fetchReminders = async () => {
@@ -370,15 +408,13 @@ const displayReminders = () => {
 
     container.innerHTML = allReminders.map(reminder => `
         <div class="item reminder-item">
+            <button class="btn-delete-x" onclick="deleteReminder(${reminder.id})" title="Delete reminder">×</button>
             <div class="item-color-bar" style="background-color: ${reminder.color || '#3498db'}"></div>
             <div class="item-body">
                 <h3>${reminder.title}</h3>
                 <div class="item-details">
-                    <span class="reminder-date"><i class="fa-regular fa-calendar"></i> ${new Date(reminder.date).toLocaleDateString()}</span>
+                    <span class="reminder-date"><i class="fa-regular fa-calendar"></i> ${(() => { const [y, m, d] = reminder.date.split('-'); return new Date(y, m-1, d).toLocaleDateString(); })()}</span>
                 </div>
-            </div>
-            <div class="item-actions">
-                <button onclick="deleteReminder(${reminder.id})" class="btn-delete">Delete</button>
             </div>
         </div>
     `).join('');

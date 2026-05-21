@@ -91,6 +91,14 @@ body {
     cursor: pointer;
 }
 
+/* cursor pointer for interactive elements */
+button:hover,
+p[id*="Btn"]:hover,
+#contactBtn:hover,
+.login:hover {
+    cursor: pointer;
+}
+
 .error-display {
     position: absolute;
     text-align: center;
@@ -218,7 +226,6 @@ body {
     border-radius: 5px;
     background-color: #fff;
     width: 475px;
-    height: auto;
     margin-top: 10px;
 }
 
@@ -229,6 +236,89 @@ body {
 .goal h1, p {
     margin-left: 10px;
     text-align: left;
+}
+
+.goal-card {
+    padding: 10px;
+}
+
+.goal-card h2 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+}
+
+.goal-description {
+    margin: 8px 0;
+    font-size: 13px;
+    line-height: 1.4;
+    max-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goal-progress {
+    margin: 10px 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #80b973;
+}
+
+.progress-text {
+    margin: 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.goal-deadline {
+    margin: 8px 0 0 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.goal-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.days-left,
+.due-today,
+.overdue {
+    font-weight: 600;
+}
+
+.view-goals-btn {
+    background-color: #80b973;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #223340;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.view-goals-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
 }
 
 /* remember */
@@ -452,7 +542,9 @@ body {
     border-radius: 10px;
     padding: 8px;
     min-height: 280px;
+    max-height: 400px;
     gap: 6px;
+    overflow-y: auto;
 }
  
 .day-name {
@@ -472,7 +564,7 @@ body {
     gap: 5px;
     flex: 1;
 }
- 
+
 /* individual calendar events injected by calendar.js */
 .calendar-event {
     background-color: #d5b4ff;
@@ -487,6 +579,67 @@ body {
  
 .calendar-event:hover {
     opacity: 0.8;
+}
+
+/* Event items in calendar */
+.event-item {
+    background-color: #d5b4ff;
+    border: 1.5px solid #223340;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 11px;
+    color: #223340;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    word-wrap: break-word;
+}
+
+.event-item:hover {
+    opacity: 0.8;
+}
+
+.reminder-event {
+    background-color: #e8f5e9;
+}
+
+.class-event {
+    background-color: #c8e6c9;
+}
+
+.event-time {
+    font-weight: 600;
+    font-size: 10px;
+    margin-bottom: 2px;
+}
+
+.event-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.event-code {
+    font-weight: 700;
+    font-size: 10px;
+    margin-bottom: 2px;
+}
+
+.event-type {
+    font-size: 9px;
+    color: #666;
+}
+
+.event-location {
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.no-events,
+.no-courses {
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+    padding: 10px;
+    font-style: italic;
 }
  
 /* edit category button + filter strip */
@@ -560,15 +713,19 @@ body {
     border: 3px solid #223340;
     border-radius: 12px;
     padding: 24px;
-    width: 320px;
-    margin: 8% auto;
+    width: 450px;
+    max-width: 90vw;
+    max-height: 80vh;
+    margin: 5% auto;
     box-shadow: 4px 4px 0px #223340;
     position: relative;
+    overflow-y: auto;
 }
  
 .category-modal-content h3 {
     margin: 0 0 14px;
     font-size: 20px;
+    text-transform: lowercase;
 }
  
 .category-modal-content input {
@@ -579,6 +736,18 @@ body {
     font-family: "Sour Gummy", sans-serif;
     font-size: 14px;
     background-color: #fff654; /* yellow inputs like wireframe */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.category-modal-content select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    background-color: #fff654;
     box-sizing: border-box;
     margin-bottom: 10px;
 }
@@ -594,6 +763,253 @@ body {
     color: #223340;
 }
 
+/* Courses List Styles */
+.courses-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.course-item {
+    background-color: #fff5e3;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.course-item-info {
+    flex: 1;
+}
+
+.course-item-name {
+    font-weight: 600;
+    color: #223340;
+    margin-bottom: 2px;
+}
+
+.course-item-code {
+    font-size: 12px;
+    color: #666;
+}
+
+.course-item-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.course-item-actions button {
+    padding: 4px 10px;
+    border: 1px solid #223340;
+    border-radius: 4px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.course-edit-btn {
+    background-color: #80b973;
+    color: #223340;
+}
+
+.course-edit-btn:hover {
+    background-color: #6ba65f;
+}
+
+.course-delete-btn {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.course-delete-btn:hover {
+    background-color: #ff5252;
+}
+
+.add-course-btn {
+    width: 100%;
+    background-color: #80b973;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    color: #223340;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.add-course-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+
+/* Course Form Styles */
+#courseForm label {
+    display: block;
+    font-weight: 600;
+    color: #223340;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    text-transform: lowercase;
+    font-size: 13px;
+}
+
+#courseForm input,
+#courseForm select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    background-color: #fff654;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.time-slot select,
+.time-slot input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    background-color: #fff654;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.time-slot label {
+    display: block;
+    font-weight: 600;
+    color: #223340;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    text-transform: lowercase;
+    font-size: 13px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.save-btn,
+.cancel-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    color: #223340;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.save-btn {
+    background-color: #80b973;
+}
+
+.save-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+
+.cancel-btn {
+    background-color: #fff654;
+}
+
+.cancel-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+
+/* Edit Course Modal Styles */
+.edit-course-modal-content {
+    background-color: #ffd6e7;
+    border: 3px solid #223340;
+    border-radius: 12px;
+    padding: 24px;
+    width: 450px;
+    margin: 5% auto;
+    box-shadow: 4px 4px 0px #223340;
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.edit-course-modal-content h3 {
+    margin: 0 0 14px;
+    font-size: 20px;
+}
+
+.edit-course-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-course-form-label {
+    font-weight: 600;
+    display: block;
+    margin-top: 12px;
+    color: #223340;
+}
+
+.edit-course-form-input,
+.edit-course-form-select,
+.edit-course-form-textarea {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+}
+
+.edit-course-form-input:focus,
+.edit-course-form-select:focus,
+.edit-course-form-textarea:focus {
+    outline: none;
+    border-color: #80b973;
+}
+
+.edit-course-schedule-divider {
+    margin: 15px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.edit-course-schedule-title {
+    margin: 10px 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #223340;
+}
+
+.edit-course-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.edit-course-button-group button {
+    flex: 1;
+}
+
 /* goal editor */
 /* override the existing .goals-page grid to match wireframe better =(^._.^)= */
 .goals-page {
@@ -607,7 +1023,7 @@ body {
  
 /* the filesheet background div already exists so enhance it */
 .goal-display {
-    background-image: url("../assets/PLACEHOLDER_FILESHEET.png");
+    background-image: url("../assets/GOALS_FILESHEET.png");
     background-repeat: no-repeat;
     background-size: cover;
     width: 420px;
@@ -757,9 +1173,141 @@ body {
     color: #223340;
 }
  
+.btn-secondary {
+    background-color: #d5b4ff;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-secondary:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+}
+ 
 .btn-danger {
     background-color: #ffd6e7;
     color: #223340;
+}
+
+.btn-delete {
+    background-color: #ffb3b3;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 1px 1px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-delete:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+    background-color: #ff8f8f;
+}
+
+.btn-delete-x {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #ffb3b3;
+    border: 2px solid #223340;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 1px 1px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s, background-color 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #223340;
+}
+
+.btn-delete-x:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
+    background-color: #ff8f8f;
+}
+
+/* reminder item styling in tasks list - center text */
+.item.reminder-item {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.item.reminder-item h3 {
+    margin: 0;
+    color: #223340;
+}
+
+.item.reminder-item .item-details {
+    width: 100%;
+}
+
+/* delete confirmation modal */
+.delete-confirmation-modal {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    inset: 0;
+    background-color: rgba(34, 51, 64, 0.5);
+}
+
+.delete-confirmation-content {
+    background-color: #ffd6e7;
+    border: 3px solid #223340;
+    border-radius: 12px;
+    padding: 24px;
+    width: 300px;
+    margin: 20% auto;
+    box-shadow: 4px 4px 0px #223340;
+    text-align: center;
+}
+
+.delete-confirmation-content h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    color: #223340;
+}
+
+.delete-confirmation-content p {
+    margin: 0 0 18px;
+    font-size: 15px;
+    color: #223340;
+}
+
+.delete-confirmation-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.delete-confirmation-buttons button {
+    padding: 8px 16px;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.delete-confirmation-buttons button:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #223340;
 }
  
 .form-message {
@@ -898,13 +1446,17 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+#emailNotifModal[style*="display: block"] {
+    display: flex !important;
 }
 
 #emailNotifModalContent {
     background-color: #fff;
-    margin: 15% auto;
     padding: 30px;
     border: 3px solid #b5eda8;
     border-radius: 10px;
@@ -914,11 +1466,15 @@ body {
 }
 
 #emailNotifModalHeader {
-    text-align: right;
+    text-align: center;
     margin-bottom: 15px;
+    position: relative;
 }
 
 #closeEmailNotifModal {
+    position: absolute;
+    top: 0;
+    right: 0;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -960,6 +1516,119 @@ body {
 
 #closeEmailNotifBtn:hover {
     background-color: #9fd088;
+}
+
+#emailNotifList {
+    margin: 15px 0;
+    line-height: 1.8;
+}
+
+#emailNotifFooter {
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+}
+
+.email-notif-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+/* EMAIL UNSUBSCRIBE MODAL */
+#emailUnsubscribeModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+#emailUnsubscribeModal[style*="display: block"] {
+    display: flex !important;
+}
+
+#emailUnsubscribeModalContent {
+    background-color: #fff;
+    padding: 30px;
+    border: 3px solid #ffd6e7;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#emailUnsubscribeModalHeader {
+    text-align: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#closeEmailUnsubscribeModal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #223340;
+}
+
+#closeEmailUnsubscribeModal:hover {
+    color: #666;
+}
+
+#emailUnsubscribeModalBody {
+    text-align: center;
+}
+
+#emailUnsubscribeModalBody h2 {
+    color: #223340;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+#emailUnsubscribeModalBody p {
+    color: #555;
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+#emailUnsubscribeModalBody ul {
+    text-align: left;
+    display: inline-block;
+    color: #555;
+}
+
+#emailUnsubscribeSubtitle {
+    font-size: 14px;
+    color: #555;
+    margin-top: 12px;
+}
+
+#emailUnsubscribeList {
+    margin: 12px 0;
+    line-height: 1.8;
+}
+
+#emailUnsubscribeFooter {
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+}
+
+.email-unsubscribe-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
 }
 
 /* TASKS PAGE!! =(^._.^)= */
@@ -1105,9 +1774,20 @@ body {
  
 /* assignment / reminder cards in the list */
 .list-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.item {
+    background-color: #ffffffcc;
+    border: 2px solid #22334050;
+    border-radius: 9px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
+    position: relative;
 }
  
 .assignment-card,
@@ -1115,10 +1795,10 @@ body {
     background-color: #ffffffcc;
     border: 2px solid #22334050;
     border-radius: 9px;
-    padding: 10px 14px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     position: relative;
 }
  
@@ -1549,4 +2229,445 @@ body {
     margin: 10px 0;
     font-weight: bold;
     color: green;
+}
+
+/* Modal Messages */
+.modal-message {
+    display: none;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal-error {
+    background-color: #ffcccc;
+    color: #cc0000;
+}
+
+.modal-error p {
+    margin: 0;
+}
+
+.modal-success {
+    background-color: #ccffcc;
+    color: #00aa00;
+}
+
+.modal-success p {
+    margin: 0;
+}
+
+/* Change Password Form Styles */
+#changePasswordForm label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #223340;
+}
+
+#changePasswordForm input[type="password"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    background-color: #fff654;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#changePasswordForm input[type="password"]:focus {
+    outline: none;
+    border-color: #80b973;
+}
+
+.change-password-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.change-password-button-group button {
+    flex: 1;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* tablets */
+@media screen and (max-width: 1024px) {
+
+    /* dashboard */
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .mini-calendar,
+    .goal {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .section2,
+    .section3 {
+        margin-left: 0;
+        background-size: cover;
+    }
+
+    /* goals */
+    .goals-page {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-display {
+        width: 100%;
+        max-width: 100%;
+        background-size: contain;
+    }
+
+    /* tasks */
+    .tasks {
+        grid-template-columns: 1fr;
+    }
+
+    .list-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* profile */
+    .profile-dash {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .box1,
+    .box2 {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    /* weekly calendar */
+    .weekly-calendar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* edit course modal */
+    .edit-course-modal-content {
+        width: 90%;
+    }
+
+    /* login */
+    .folder {
+        width: 70%;
+    }
+
+    .login {
+        width: 30%;
+    }
+
+    .contact-us {
+        width: 25%;
+    }
+}
+
+/* phones */
+@media screen and (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    /* navbar */
+    #nav {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    #nav a {
+        font-size: 16px;
+        width: auto;
+    }
+
+    /* dashboard */
+    .dashboard {
+        padding: 10px;
+    }
+
+    .mini-calendar {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .goal {
+        width: 100%;
+    }
+
+    .remember {
+        width: 90%;
+        margin: auto;
+    }
+
+    /* calendar page */
+    .calendar-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .weekly-calendar {
+        grid-template-columns: 1fr;
+    }
+
+    .day-column {
+        min-height: auto;
+    }
+
+    /* forms */
+    .form-row {
+        flex-direction: column;
+    }
+
+    .goal-forms,
+    .add-goal,
+    .update-goal,
+    .add-assignment,
+    .add-reminder {
+        width: 100%;
+    }
+
+    /* modal windows */
+    .category-modal-content,
+    .edit-course-modal-content,
+    .delete-confirmation-content,
+    .collaborator-popup-content,
+    #contactModalContent,
+    #importModalContent,
+    #emailNotifModalContent,
+    #emailUnsubscribeModalContent {
+        width: 95%;
+        margin: 10% auto;
+    }
+
+    /* profile */
+    .profile {
+        width: 150px;
+        height: 150px;
+    }
+
+    .bubble {
+        width: 120px;
+        height: auto;
+        margin-left: 0;
+    }
+
+    /* signup */
+    .signup-card {
+        width: 95%;
+        padding: 20px;
+    }
+
+    /* friends */
+    .friend-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .friend-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    /* login page */
+    .folder {
+        width: 95%;
+        background-position-y: 0;
+    }
+
+    .login {
+        width: 40%;
+        bottom: -5%;
+        right: 2%;
+        font-size: 16px;
+    }
+
+    #login a {
+        position: static;
+        display: block;
+        margin-top: 20px;
+    }
+
+    /* sticky contact */
+    .contact-us {
+        position: static;
+        width: 150px;
+        margin: 20px auto;
+    }
+
+    #contactBtn {
+        margin-top: 40%;
+        font-size: 16px;
+    }
+
+    
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    p,
+    label,
+    input,
+    textarea,
+    button {
+        font-size: 14px;
+    }
+}
+
+/* very small phones */
+@media screen and (max-width: 480px) {
+
+    .mini-calendar {
+        font-size: 12px;
+    }
+
+    .date {
+        padding: 6px;
+    }
+
+    .header button {
+        width: 32px;
+        height: 32px;
+    }
+
+    .goal-display {
+        padding: 15px;
+    }
+
+    .assignments,
+    #reminders,
+    .add-assignment,
+    .add-reminder {
+        padding: 16px;
+    }
+
+    .btn,
+    .btn-secondary,
+    .btn-delete {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .calendar-header h2,
+    .assignments h2,
+    .add-assignment h2,
+    .goal-display h2 {
+        font-size: 22px;
+    }
+}
+
+/* Time Slot Styles */
+#scheduleContainer {
+    margin-top: 16px;
+    padding: 12px;
+    border: 2px solid #223340;
+    border-radius: 8px;
+    background-color: #f5e6ff;
+}
+
+#scheduleContainer h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #223340;
+    font-size: 14px;
+    text-transform: lowercase;
+}
+
+#timeSlotsContainer {
+    margin-bottom: 12px;
+}
+
+.time-slot {
+    background-color: #fff5e3;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.time-slot-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.time-slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.time-slot-header h5 {
+    margin: 0;
+    color: #223340;
+    font-size: 13px;
+    text-transform: lowercase;
+}
+
+.remove-time-slot-btn {
+    background-color: #ff6b6b;
+    color: white;
+    border: 2px solid #223340;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 1px 1px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.remove-time-slot-btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+.add-time-slot-btn {
+    background-color: #b4d5ff;
+    color: #223340;
+    border: 2px solid #223340;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: "Sour Gummy", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #223340;
+    transition: transform 0.1s, box-shadow 0.1s;
+    width: 100%;
+}
+
+.add-time-slot-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0px #223340;
+}
+
+.add-time-slot-btn:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0px #223340;
 }

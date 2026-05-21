@@ -49,7 +49,7 @@
                 <button id="filterAll" class="filter-btn active">all</button>
                 <button id="filterReminders" class="filter-btn">reminders</button>
                 <button id="filterClasses" class="filter-btn">classes</button>
-                <button id="filterCategory" class="filter-btn">category</button>
+                <button id="filterCategory" class="filter-btn">assignment</button>
             </div>
 
             <div class="calendar-container">
@@ -91,13 +91,44 @@
                 </div>
             </div>
 
-            <!-- edit categories popup -->
+            <!-- manage courses popup -->
             <div class="category-modal" id="categoryModal">
                 <div class="category-modal-content">
                     <button class="close-modal" id="closeCategoryModal">&times;</button>
-                    <h3>add category</h3>
-                    <input type="text" placeholder="name">
-                    <input type="text" placeholder="colour">
+                    
+                    <!-- Courses List -->
+                    <div id="coursesList">
+                        <h3>courses</h3>
+                        <div id="coursesContainer" class="courses-list-container"></div>
+                        <button id="addNewCourseBtn" class="add-course-btn">+ add course</button>
+                    </div>
+                    
+                    <!-- Add/Edit Course Form -->
+                    <div id="courseForm" style="display: none;">
+                        <h3 id="formTitle">add course</h3>
+                        <form id="courseFormElement">
+                            <label>course name</label>
+                            <input type="text" id="courseName" placeholder="e.g., Introduction to CS" required>
+                            
+                            <label>course code</label>
+                            <input type="text" id="courseCode" placeholder="e.g., CMP208">
+                            
+                            <label>instructor</label>
+                            <input type="text" id="courseInstructor" placeholder="e.g., Dr. Smith">
+                            
+                            <!-- Class Schedule Times -->
+                            <div id="scheduleContainer">
+                                <h4>class schedule times</h4>
+                                <div id="timeSlotsContainer"></div>
+                                <button type="button" id="addTimeSlotBtn" class="add-time-slot-btn">+ add additional time</button>
+                            </div>
+                            
+                            <div class="form-buttons">
+                                <button type="submit" class="save-btn">save</button>
+                                <button type="button" id="cancelFormBtn" class="cancel-btn">cancel</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 

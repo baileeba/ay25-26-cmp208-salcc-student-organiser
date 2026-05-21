@@ -33,7 +33,7 @@ const emailService = {
         <body style="font-family: Arial, sans-serif; color: #333;">
           <h2>Assignment Due Reminder</h2>
           <p>Hi ${userName},</p>
-          <p>This is a reminder that your assignment <strong>${assignmentTitle}</strong> for <strong>${courseName}</strong> is due on <strong>${new Date(dueDate).toLocaleDateString()}</strong>.</p>
+          <p>This is a reminder that your assignment <strong>${assignmentTitle}</strong> for <strong>${courseName}</strong> is due on <strong>${(() => { const [y, m, d] = dueDate.split('-'); return new Date(y, m-1, d).toLocaleDateString(); })()}</strong>.</p>
           <p>Log in to StudSort to view more details and submit your work.</p>
           <br/>
           <p>Best regards,<br/>The StudSort Team</p>
@@ -49,7 +49,7 @@ const emailService = {
           <h2>${eventType.charAt(0).toUpperCase() + eventType.slice(1)} Upcoming</h2>
           <p>Hi ${userName},</p>
           <p>You have an upcoming <strong>${eventType}</strong> for <strong>${courseName}</strong>:</p>
-          <p><strong>${eventTitle}</strong> on <strong>${new Date(eventDate).toLocaleDateString()}</strong></p>
+          <p><strong>${eventTitle}</strong> on <strong>${(() => { const [y, m, d] = eventDate.split('-'); return new Date(y, m-1, d).toLocaleDateString(); })()}</strong></p>
           <p>Log in to StudSort to view details and prepare.</p>
           <br/>
           <p>Best regards,<br/>The StudSort Team</p>

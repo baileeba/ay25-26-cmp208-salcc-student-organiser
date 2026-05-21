@@ -58,6 +58,12 @@
                             <input type="text" id="assignment-title" placeholder="title" required>
                         </div>
                         <div class="form-group">
+                            <label for="assignment-collaborator">Add Collaborators:</label>
+                            <select id="assignment-collaborator"></select>
+                            <button type="button" id="btn-add-collaborator" class="btn-secondary">Add</button>
+                        </div>
+                        <div id="collaborators-list" class="collaborators-list"></div>
+                        <div class="form-group">
                             <textarea id="assignment-description" placeholder="description"></textarea>
                         </div>
                         <div class="form-row">
@@ -83,9 +89,9 @@
                                 <label for="assignment-weight">Weight (%):</label>
                                 <input type="number" id="assignment-weight" min="0" max="100">
                             </div>
-
-                            <div class = "form-group">
-                                <label for="assignment-group">Add Collaborator:</label>
+                            <div class="form-group">
+                                <label for="assignment-color">Color:</label>
+                                <input type="color" id="assignment-color" value="#3498db">
                             </div>
                         </div>
                         <button type="submit" class="btn-primary">Add Assignment</button>
@@ -129,6 +135,18 @@
                 <h3>add collaborator</h3>
                 <input type="text" id="collaboratorEmail" placeholder="email@salcc.edu">
                 <button class="send-btn" onclick="document.getElementById('collaboratorPopup').style.display='none'">send</button>
+            </div>
+        </div>
+
+        <!-- delete confirmation modal -->
+        <div class="delete-confirmation-modal" id="deleteConfirmationModal">
+            <div class="delete-confirmation-content">
+                <h3>Confirm Delete</h3>
+                <p id="deleteConfirmationMessage">Are you sure you want to delete this item?</p>
+                <div class="delete-confirmation-buttons">
+                    <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                </div>
             </div>
         </div>
 

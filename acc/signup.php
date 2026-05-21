@@ -1,5 +1,10 @@
 <?php
 include "connect.php";
+include "../config/email_config.php";
+require "../vendor/autoload.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 $name = $username = $email = $password = "";
 $nameErr = $usernameErr = $emailErr = $passwordErr = "";
@@ -38,7 +43,68 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $stmt->bind_param("ssss", $name, $username, $email, $password);
 
         if ($stmt->execute()) {
-            echo "Thank you for signing up!";
+            // Send welcome email
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = SMTP_HOST;
+                $mail->SMTPAuth = true;
+                $mail->Username = SMTP_USER;
+                $mail->Password = SMTP_PASS;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = SMTP_PORT;
+
+                $mail->setFrom(SENDER_EMAIL, SENDER_NAME);
+                $mail->addAddress($email, $name);
+
+                $mail->isHTML(true);
+                $mail->Subject = 'Welcome to StudSort!';
+                
+                $emailBody = "
+                    <html>
+                    <head>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                            .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+                            .content { background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 0 0 5px 5px; }
+                            .details { background-color: white; padding: 15px; margin: 15px 0; border-left: 4px solid #4CAF50; }
+                            .details p { margin: 8px 0; }
+                            .label { font-weight: bold; color: #333; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class='container'>
+                            <div class='header'>
+                                <h1>Welcome to StudSort!</h1>
+                            </div>
+                            <div class='content'>
+                                <p>Hi <strong>" . htmlspecialchars($name) . "</strong>,</p>
+                                <p>Thank you for signing up with StudSort! Your account has been successfully created.</p>
+                                
+                                <div class='details'>
+                                    <p><span class='label'>Account Details:</span></p>
+                                    <p><strong>Name:</strong> " . htmlspecialchars($name) . "</p>
+                                    <p><strong>Username:</strong> " . htmlspecialchars($username) . "</p>
+                                    <p><strong>Email:</strong> " . htmlspecialchars($email) . "</p>
+                                </div>
+                                
+                                <p>You can now log in to your account and start organizing your academic life with StudSort.</p>
+                                <p>If you have any questions or need assistance, feel free to contact us.</p>
+                                
+                                <p>Best regards,<br><strong>StudSort Team</strong></p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                ";
+                
+                $mail->Body = $emailBody;
+                $mail->send();
+                echo "Thank you for signing up! A welcome email has been sent to your account.";
+            } catch (Exception $e) {
+                echo "Thank you for signing up! However, there was an issue sending the welcome email. Error: {$mail->ErrorInfo}";
+            }
         } else {
             echo "Error: ".$stmt->error;
         }

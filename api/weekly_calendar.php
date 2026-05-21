@@ -10,10 +10,20 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Get the start of the current week (Monday)
-$today = new DateTime();
-$monday = clone $today;
-$monday->modify('Monday this week');
+// Get the start of the week - use provided Monday or calculate from today
+if (isset($_GET['monday'])) {
+    // Use the Monday date provided by the frontend
+    $monday = DateTime::createFromFormat('Y-m-d', $_GET['monday']);
+    if ($monday === false) {
+        $monday = new DateTime();
+        $monday->modify('Monday this week');
+    }
+} else {
+    // Fallback to server's current week
+    $monday = new DateTime();
+    $monday->modify('Monday this week');
+}
+
 $sunday = clone $monday;
 $sunday->modify('Sunday this week');
 
@@ -79,8 +89,36 @@ while ($row = $classes_result->fetch_assoc()) {
     ];
 }
 
+// Fetch assignments for the week
+$assignments_sql = "SELECT a.assignment_id, a.title, a.due_date, a.due_time, 
+                           a.priority, a.color, c.course_code, c.course_name
+                    FROM assignments a
+                    INNER JOIN courses c ON a.course_id = c.course_id
+                    WHERE a.user_id = ? AND a.due_date BETWEEN ? AND ?
+                    ORDER BY a.due_date ASC, a.due_time ASC";
+
+$stmt = $conn->prepare($assignments_sql);
+$stmt->bind_param("iss", $user_id, $monday_date, $sunday_date);
+$stmt->execute();
+$assignments_result = $stmt->get_result();
+
+$assignments = [];
+while ($row = $assignments_result->fetch_assoc()) {
+    $assignments[] = [
+        "id" => $row["assignment_id"],
+        "date" => $row["due_date"],
+        "time" => $row["due_time"],
+        "title" => $row["title"],
+        "priority" => $row["priority"],
+        "color" => $row["color"],
+        "course_code" => $row["course_code"],
+        "course_name" => $row["course_name"],
+        "category" => "assignment"
+    ];
+}
+
 // Combine and sort all events
-$events = array_merge($reminders, $classes);
+$events = array_merge($reminders, $classes, $assignments);
 usort($events, function($a, $b) {
     $date_cmp = strcmp($a['date'], $b['date']);
     if ($date_cmp !== 0) return $date_cmp;

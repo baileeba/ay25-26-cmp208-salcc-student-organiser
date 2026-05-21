@@ -47,7 +47,7 @@
 
             <div class = 'box1'>
                 <p id = 'editProfileBtn'>edit profile</p>
-                <p id = 'editCategoriesBtn'>edit categories</p>
+                <p id = 'editCategoriesBtn'>edit courses</p>
                 <p id = "importBtn">import SONIS schedule</p>
                 <p id = "emailNotifsBtn">request email notifs</p>
                 <div class = "contact-us">
@@ -104,12 +104,46 @@
         <div id="emailNotifModal">
             <div id="emailNotifModalContent">
                 <div id="emailNotifModalHeader">
+                    <h2>Email Notifications</h2>
                     <span id="closeEmailNotifModal">&times;</span>
                 </div>
                 <div id="emailNotifModalBody">
-                    <h2>Email Notifications Enabled!</h2>
-                    <p>You will now receive email reminders for your upcoming assignments, events, and classes.</p>
-                    <button id="closeEmailNotifBtn">Got it</button>
+                    <p>By confirming, you agree to receive email notifications for:</p>
+                    <ul id="emailNotifList">
+                        <li>Class reminders when it's time for your classes</li>
+                        <li>Upcoming assignments and deadlines</li>
+                        <li>Task reminders and notifications</li>
+                        <li>Goal deadline alerts</li>
+                    </ul>
+                    <p id="emailNotifFooter">You can manage these notifications anytime from your profile settings.</p>
+                    <div class="email-notif-button-group">
+                        <button type="button" id="cancelEmailNotif" class="btn btn-danger">Cancel</button>
+                        <button type="button" id="confirmEmailNotif" class="btn btn-primary">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="emailUnsubscribeModal">
+            <div id="emailUnsubscribeModalContent">
+                <div id="emailUnsubscribeModalHeader">
+                    <h2>Unsubscribe from Email Notifications</h2>
+                    <span id="closeEmailUnsubscribeModal">&times;</span>
+                </div>
+                <div id="emailUnsubscribeModalBody">
+                    <p>Are you sure you want to unsubscribe from email notifications?</p>
+                    <p id="emailUnsubscribeSubtitle">You will no longer receive emails for:</p>
+                    <ul id="emailUnsubscribeList">
+                        <li>Class reminders</li>
+                        <li>Upcoming assignments and deadlines</li>
+                        <li>Task reminders and notifications</li>
+                        <li>Goal deadline alerts</li>
+                    </ul>
+                    <p id="emailUnsubscribeFooter">You can re-enable notifications anytime.</p>
+                    <div class="email-unsubscribe-button-group">
+                        <button type="button" id="cancelUnsubscribe" class="btn btn-primary">Keep Notifications</button>
+                        <button type="button" id="confirmUnsubscribe" class="btn btn-danger">Unsubscribe</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -133,6 +167,92 @@
                     
                     <button type="submit" name="submit">Upload and Import</button>
                     <button type="button" id="cancelImport">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="categoryModal" class="category-modal">
+            <div class="category-modal-content">
+                <h3>Edit Courses</h3>
+                <button class="close-modal" id="closeCategoryModal">&times;</button>
+                <div id="categoriesList"></div>
+                <input type="text" id="newCategoryInput" placeholder="Add new course..." maxlength="100">
+                <button id="addCategoryBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Add Course</button>
+            </div>
+        </div>
+
+        <div id="editCourseModal" class="category-modal">
+            <div class="edit-course-modal-content">
+                <h3>Edit Course</h3>
+                <button class="close-modal" id="closeEditCourseModal">&times;</button>
+                <form id="editCourseForm" class="edit-course-form">
+                    <input type="hidden" id="editCourseId">
+                    
+                    <label for="editCourseName" class="edit-course-form-label">Course Name:</label>
+                    <input type="text" id="editCourseName" maxlength="100" class="edit-course-form-input">
+                    
+                    <label for="editCourseCode" class="edit-course-form-label">Course Code:</label>
+                    <input type="text" id="editCourseCode" maxlength="20" class="edit-course-form-input">
+                    
+                    <label for="editInstructor" class="edit-course-form-label">Instructor:</label>
+                    <input type="text" id="editInstructor" maxlength="100" class="edit-course-form-input">
+                    
+                    <hr class="edit-course-schedule-divider">
+                    <h4 class="edit-course-schedule-title">Class Schedule (Optional)</h4>
+                    
+                    <label for="editDayOfWeek" class="edit-course-form-label">Day of Week:</label>
+                    <select id="editDayOfWeek" class="edit-course-form-select">
+                        <option value="">Select a day</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                    
+                    <label for="editStartTime" class="edit-course-form-label">Start Time:</label>
+                    <input type="time" id="editStartTime" class="edit-course-form-input">
+                    
+                    <label for="editEndTime" class="edit-course-form-label">End Time:</label>
+                    <input type="time" id="editEndTime" class="edit-course-form-input">
+                    
+                    <label for="editLocation" class="edit-course-form-label">Location:</label>
+                    <input type="text" id="editLocation" maxlength="100" class="edit-course-form-input">
+                    
+                    <div class="edit-course-button-group">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" id="cancelEditCourse" class="btn btn-danger">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="changePasswordModal" class="category-modal">
+            <div class="category-modal-content">
+                <h3>Change Password</h3>
+                <button class="close-modal" id="closeChangePasswordModal">&times;</button>
+                <div id="changePasswordValidationError" class="modal-message modal-error">
+                    <p id="changePasswordErrorMessage"></p>
+                </div>
+                <div id="changePasswordSuccessMessage" class="modal-message modal-success">
+                    <p>Password changed successfully!</p>
+                </div>
+                <form id="changePasswordForm">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required>
+                    
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" name="newPassword" required>
+                    
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    
+                    <div class="change-password-button-group">
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                        <button type="button" id="cancelChangePassword" class="btn btn-danger">Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>
